@@ -174,7 +174,7 @@ const Skills = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="skills" className="min-h-screen py-20 relative" style={{
+    <section ref={sectionRef} id="skills" className="section-ambient min-h-screen py-20 relative" style={{
       background: themeColors.background.sections?.skills || themeColors.background.gradient,
       transition: 'background 0.3s ease-in-out'
     }}>

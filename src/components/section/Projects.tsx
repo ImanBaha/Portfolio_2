@@ -84,7 +84,7 @@ const Projects = () => {
   return (
     <section
       id="projects"
-      className="py-20 relative transition-colors duration-300"
+      className="section-ambient py-20 relative transition-colors duration-300"
       style={{
         background: themeColors.background.sections?.projects || themeColors.background.gradient,
         transition: 'background 0.3s ease-in-out'

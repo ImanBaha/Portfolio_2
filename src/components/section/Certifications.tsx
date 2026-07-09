@@ -72,7 +72,7 @@ const Certifications = () => {
   ];
 
   return (
-    <section id="certifications" className="py-8 relative" style={{
+    <section id="certifications" className="section-ambient py-8 relative" style={{
       background: themeColors.background.sections?.certifications || themeColors.background.gradient,
       transition: 'background 0.3s ease-in-out'
     }}>

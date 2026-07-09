@@ -310,6 +310,49 @@ body {
   background: radial-gradient(circle, rgba(34, 211, 238, 0.12) 0%, transparent 65%);
 }
 
+/* Ambient section background: faint dot grid + corner accent glow */
+.section-ambient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(14, 165, 233, 0.10) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 45%, black 15%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 45%, black 15%, transparent 78%);
+  z-index: 0;
+}
+
+.dark .section-ambient::before {
+  background-image: radial-gradient(rgba(34, 211, 238, 0.09) 1px, transparent 1px);
+}
+
+.section-ambient::after {
+  content: '';
+  position: absolute;
+  width: 560px;
+  height: 560px;
+  max-width: 70vw;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.07) 0%, transparent 65%);
+  z-index: 0;
+}
+
+.dark .section-ambient::after {
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.09) 0%, transparent 65%);
+}
+
+/* Alternate the glow corner so sections don't feel copy-pasted */
+.section-ambient:nth-of-type(odd)::after {
+  top: 5%;
+  left: -8%;
+}
+
+.section-ambient:nth-of-type(even)::after {
+  bottom: 5%;
+  right: -8%;
+}
+
 /* Monospace section label above headings, e.g. "// projects" */
 .section-label {
   font-family: 'JetBrains Mono', Consolas, monospace;

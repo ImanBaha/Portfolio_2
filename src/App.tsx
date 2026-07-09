@@ -6,7 +6,6 @@ import { colors } from './styles/colors'
 import Navigation from './components/section/Navigation'
 import CommandPalette from './components/CommandPalette'
 import About from './components/section/About'
-import { divider } from './assets'
 import './App.css'
 
 // Lazy load project pages - add your project page imports here
@@ -60,19 +59,36 @@ function HomePage() {
             zIndex: 1
           }}
         />
-        <img
-          src={divider}
-          alt="Section divider"
-          className="w-full h-auto relative"
-          style={{
-            zIndex: 2,
-            filter: isDarkMode ? 'invert(1) hue-rotate(180deg)' : 'none',
-            opacity: isDarkMode ? 0.7 : 1
-          }}
-          width="1200"
-          height="100"
-          loading="lazy"
-        />
+        {/* Code-styled divider: gradient lines with a centered glyph */}
+        <div
+          className="relative flex items-center justify-center gap-5 max-w-4xl mx-auto px-8 py-6"
+          style={{ zIndex: 2 }}
+          role="separator"
+          aria-hidden="true"
+        >
+          <div
+            className="flex-1 h-px"
+            style={{
+              background: `linear-gradient(90deg, transparent, ${isDarkMode ? 'rgba(34, 211, 238, 0.5)' : 'rgba(14, 165, 233, 0.45)'})`
+            }}
+          />
+          <span
+            className="font-mono text-sm select-none"
+            style={{
+              color: isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.accent[500],
+              textShadow: isDarkMode ? '0 0 12px rgba(34, 211, 238, 0.5)' : 'none',
+              letterSpacing: '0.1em'
+            }}
+          >
+            {'</>'}
+          </span>
+          <div
+            className="flex-1 h-px"
+            style={{
+              background: `linear-gradient(90deg, ${isDarkMode ? 'rgba(34, 211, 238, 0.5)' : 'rgba(14, 165, 233, 0.45)'}, transparent)`
+            }}
+          />
+        </div>
       </div>
       <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
         <Skills />

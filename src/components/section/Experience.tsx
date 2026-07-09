@@ -41,7 +41,7 @@ const Experience = () => {
   ];
 
   return (
-    <section id="experience" className="py-8 relative" style={{
+    <section id="experience" className="section-ambient py-8 relative" style={{
       background: themeColors.background.sections?.experience || themeColors.background.gradient,
       transition: 'background 0.3s ease-in-out'
     }}>
