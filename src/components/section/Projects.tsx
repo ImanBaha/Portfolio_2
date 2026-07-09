@@ -105,6 +105,7 @@ const Projects = () => {
       {/* main content container with the project cards */}
       <TooltipProvider delayDuration={200}>
         <div className="container mx-auto px-6 relative z-10">
+          <span className="section-label text-center" style={{ color: isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.accent[600] }}>// things i've built</span>
           <div className="flex items-center justify-center gap-1 mb-4">
             <h2 className="text-4xl font-bold" style={{ color: isDarkMode ? themeColors.colors.white : themeColors.colors.accent[500] }}>Projects</h2>
             <Tooltip>

@@ -5,22 +5,18 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="/favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Personal portfolio — software engineer. Projects, experience, and skills." />
   <!-- DNS prefetch and preconnect for faster resource loading -->
-  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <!-- Preload critical images with better sizing -->
   <link rel="preload" as="image" href="/src/assets/aboutme_journal-400w.webp" type="image/webp" fetchpriority="high"
     media="(max-width: 768px)">
   <link rel="preload" as="image" href="/src/assets/aboutme_journal-800w.webp" type="image/webp" fetchpriority="high"
     media="(min-width: 769px)">
-  <!-- Preload first few stickers for above-the-fold content -->
-  <link rel="preload" as="image" href="/src/assets/sticker_1.webp" type="image/webp">
-  <link rel="preload" as="image" href="/src/assets/sticker_2.webp" type="image/webp">
-  <link rel="preload" as="image" href="/src/assets/sticker_3.webp" type="image/webp">
-  <link rel="preload" as="image" href="/src/assets/sticker_4.webp" type="image/webp">
-  <!-- Font preloading to reduce network dependency chain -->
-  <link rel="preload" as="font" href="/src/assets/punkbabe/PUNKBABE TRIAL.ttf" type="font/ttf" crossorigin>
-  <link rel="preload" as="font" href="/src/assets/dk_crayonista/DK Crayonista.ttf" type="font/ttf" crossorigin>
   <title>Iman Baha</title>
   <style>
     /* Critical CSS for initial render - Above the fold styles */
@@ -31,9 +27,9 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
       background: #FFFFFF;
-      color: #8B5A65;
+      color: #075985;
       line-height: 1.6;
     }
 
@@ -44,20 +40,13 @@
       left: 0;
       right: 0;
       z-index: 1000;
-      background: rgba(255, 232, 239, 0.4);
+      background: rgba(240, 249, 255, 0.4);
       backdrop-filter: blur(20px);
       padding: 1rem 0;
     }
 
     .main-content {
       padding-top: 80px;
-    }
-
-    /* About section critical styles */
-    .about-section {
-      min-height: 100vh;
-      background: linear-gradient(180deg, rgb(255 232 239) 0%, rgb(254 245 245) 100%);
-      padding: 2rem 0;
     }
 
     .container {
@@ -97,20 +86,6 @@
     picture {
       content-visibility: auto;
       contain-intrinsic-size: 0 200px;
-    }
-
-    /* Optimize animations - removed global transform-style that breaks fixed positioning */
-    /* Font faces with swap for better performance */
-    @font-face {
-      font-family: 'Punk Babe';
-      src: url('/src/assets/punkbabe/PUNKBABE TRIAL.ttf') format('truetype');
-      font-display: swap;
-    }
-
-    @font-face {
-      font-family: 'DK Crayonista';
-      src: url('/src/assets/dk_crayonista/DK Crayonista.ttf') format('truetype');
-      font-display: swap;
     }
   </style>
 </head>

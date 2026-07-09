@@ -170,15 +170,12 @@ Replace badge images in `src/assets/badges/` with your own.
 
 Update your technical skills in `src/components/section/Skills.tsx`. Skill icons are in `src/assets/techstack/`.
 
-**Proficiency bars** — Edit the `skillGroups` array at the top of `src/components/section/Skills.tsx`. Bars animate to their target percentage when scrolled into view:
+**Skill terminal** — Edit the `skillGroups` array at the top of `src/components/section/Skills.tsx`. Skills render inside a terminal-style window with staggered animations on scroll:
 ```tsx
 const skillGroups: SkillGroup[] = [
   {
-    category: "Languages",
-    skills: [
-      { name: "TypeScript", proficiency: 90 },
-      // Add your own skills (proficiency 0-100)
-    ],
+    directory: "./languages",
+    skills: ["TypeScript", "JavaScript", "Python"],
   },
 ];
 ```
@@ -222,7 +219,8 @@ portfolio-template/
 - Dark tech theme with electric blue/cyan accent
 - Dark/light mode with system preference detection
 - Ctrl+K / Cmd+K command palette for quick navigation
-- Animated skill proficiency bars
+- Terminal-style skill showcase with staggered animations
+- Scroll-animated floating tech icons in the About section
 - Interactive ASCII text with morphing effects
 - Aurora gradient backgrounds
 - Image carousel for project screenshots

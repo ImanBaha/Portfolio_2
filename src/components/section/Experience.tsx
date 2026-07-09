@@ -68,6 +68,7 @@ const Experience = () => {
         }}
       />
       <div className="container mx-auto px-6 relative" style={{ zIndex: 2 }}>
+        <span className="section-label text-center" style={{ color: isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.accent[600] }}>// where i've been</span>
         <h2 className="text-4xl font-bold text-center mb-6" style={{ color: isDarkMode ? themeColors.colors.white : themeColors.colors.accent[500] }}>Experience</h2>
 
         <div className="max-w-4xl mx-auto space-y-4">

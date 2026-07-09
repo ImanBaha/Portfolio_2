@@ -77,6 +77,7 @@ const Certifications = () => {
       transition: 'background 0.3s ease-in-out'
     }}>
       <div className="container mx-auto px-6 relative" style={{ zIndex: 2 }}>
+        <span className="section-label text-center" style={{ color: isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.accent[600] }}>// proof of work</span>
         <h2 className="text-4xl font-bold text-center mb-6" style={{ color: isDarkMode ? themeColors.colors.white : themeColors.colors.accent[500] }}>Certifications & Credentials</h2>
 
         <div className="max-w-6xl mx-auto">

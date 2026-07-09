@@ -5,10 +5,11 @@ import AsciiMorphText from '../AsciiMorphText';
 import TypewriterCarousel from '../TypewriterCarousel';
 import { useDarkMode } from '../../contexts/DarkModeContext';
 import { useThemeColors, withAlpha } from '../../hooks/useThemeColors';
-import { aboutMeJournalWebp800, aboutMeJournalWebp400, profile1, profile2, profile3 } from '../../assets';
+import { aboutMeJournalWebp800, aboutMeJournalWebp400, profile1, profile2, profile3, techStackIcons } from '../../assets';
 
 
 const About = () => {
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [asciiText, setAsciiText] = useState('');
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -30,16 +31,19 @@ const About = () => {
     { src: profile3, caption: "photo 3" }
   ];
 
-  const fullAsciiArt = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⢠⡾⠲⠶⣤⣀⣠⣤⣤⣤⡿⠛⠿⡴⠾⠛⢻⡆⠀⠀⠀
-⠀⠀⠀⣼⠁⠀⠀⠀⠉⠁⠀⢀⣿⠐⡿⣿⠿⣶⣤⣤⣷⡀⠀⠀
-⠀⠀⠀⢹⡶⠀⠀⠀⠀⠀⠀⠈⢯⣡⣿⣿⣀⣰⣿⣦⢂⡏⠀⠀
-⠀⠀⢀⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠹⣍⣭⣾⠁⠀⠀
-⠀⣀⣸⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣸⣧⣤⡀
-⠈⠉⠹⣏⡁⠀⢸⣿⠀⠀⠀⢀⡀⠀⠀⠀⣿⠆⠀⢀⣸⣇⣀⠀
-⠀⠐⠋⢻⣅⡄⢀⣀⣀⡀⠀⠯⠽⠂⢀⣀⣀⡀⠀⣤⣿⠀⠉⠀
-⠀⠀⠴⠛⠙⣳⠋⠉⠉⠙⣆⠀⠀⢰⡟⠉⠈⠙⢷⠟⠈⠙⠂⠀
-⠀⠀⠀⠀⠀⢻⣄⣠⣤⣴⠟⠛⠛⠛⢧⣤⣤⣀⡾⠀⠀⠀⠀⠀`;
+  const fullAsciiArt = `┌───────────────────────────────┐
+│ ● ● ●            ~/portfolio  │
+├───────────────────────────────┤
+│ $ whoami                      │
+│ > software engineer           │
+│                               │
+│ $ cat status.txt              │
+│ > building cool things...     │
+│                               │
+│ $ npm run life                │
+│ ✓ compiled successfully       │
+│ $ ▊                           │
+└───────────────────────────────┘`;
 
   // Typewriter effect for ASCII art
   useEffect(() => {
@@ -62,6 +66,41 @@ const About = () => {
     return () => clearTimeout(startDelay);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run once on mount
+
+  // Scroll progress drives the floating tech icons around the journal
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (!sectionRef.current) {
+            ticking = false;
+            return;
+          }
+
+          const rect = sectionRef.current.getBoundingClientRect();
+          const sectionHeight = rect.height;
+          const windowHeight = window.innerHeight;
+
+          // Calculate how much of the section is in view
+          const visibleTop = Math.max(0, -rect.top);
+          const visibleBottom = Math.min(sectionHeight, windowHeight - rect.top);
+          const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+
+          const progress = visibleHeight / windowHeight;
+          setScrollProgress(Math.min(1, Math.max(0, progress)));
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial call
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Focus management for modal
   useEffect(() => {
@@ -109,6 +148,62 @@ const About = () => {
     }
   };
 
+  // Tech icons that spread out around the journal as you scroll
+  const floatingIcons = [
+    { id: 1, image: techStackIcons.ReactLight, initialX: -180, initialY: -80, finalX: -550, finalY: -100, mobileInitialX: -120, mobileInitialY: -60, mobileFinalX: -250, mobileFinalY: -80 },
+    { id: 2, image: techStackIcons.TypeScript, initialX: 180, initialY: -60, finalX: 600, finalY: -250, mobileInitialX: 120, mobileInitialY: -40, mobileFinalX: 200, mobileFinalY: -120 },
+    { id: 3, image: techStackIcons.NodeJSLight, initialX: -160, initialY: 240, finalX: -200, finalY: 380, mobileInitialX: -100, mobileInitialY: 160, mobileFinalX: -120, mobileFinalY: 220 },
+    { id: 4, image: techStackIcons.Docker, initialX: 190, initialY: 260, finalX: 500, finalY: 150, mobileInitialX: 110, mobileInitialY: 180, mobileFinalX: 180, mobileFinalY: 120 },
+    { id: 5, image: techStackIcons.JavaScript, initialX: -200, initialY: 120, finalX: -200, finalY: -380, mobileInitialX: -130, mobileInitialY: 80, mobileFinalX: -130, mobileFinalY: -180 },
+    { id: 6, image: techStackIcons.AWSLight, initialX: 170, initialY: 100, finalX: 150, finalY: -360, mobileInitialX: 110, mobileInitialY: 70, mobileFinalX: 100, mobileFinalY: -160 },
+    { id: 7, image: techStackIcons.GithubLight, initialX: -130, initialY: -130, finalX: -450, finalY: -380, mobileInitialX: -90, mobileInitialY: -90, mobileFinalX: -200, mobileFinalY: -200 },
+    { id: 8, image: techStackIcons.MongoDB, initialX: 150, initialY: 200, finalX: 200, finalY: 350, mobileInitialX: 100, mobileInitialY: 140, mobileFinalX: 130, mobileFinalY: 200 },
+    { id: 9, image: techStackIcons.TailwindCSSLight, initialX: -140, initialY: 300, finalX: -500, finalY: 200, mobileInitialX: -90, mobileInitialY: 200, mobileFinalX: -180, mobileFinalY: 160 },
+    { id: 10, image: techStackIcons.ViteLight, initialX: 200, initialY: 120, finalX: 500, finalY: -380, mobileInitialX: 130, mobileInitialY: 80, mobileFinalX: 200, mobileFinalY: -180 },
+    { id: 11, image: techStackIcons.ExpressJSLight, initialX: -220, initialY: -40, finalX: 600, finalY: 10, mobileInitialX: -140, mobileInitialY: -30, mobileFinalX: 220, mobileFinalY: 10 },
+    { id: 12, image: techStackIcons.GraphQLLight, initialX: 110, initialY: -180, finalX: 500, finalY: 300, mobileInitialX: 80, mobileInitialY: -120, mobileFinalX: 180, mobileFinalY: 180 },
+    { id: 13, image: techStackIcons.RedisLight, initialX: -120, initialY: 360, finalX: 500, finalY: -100, mobileInitialX: -80, mobileInitialY: 240, mobileFinalX: 180, mobileFinalY: -80 },
+    { id: 14, image: techStackIcons.CPP, initialX: 210, initialY: 40, finalX: -640, finalY: -220, mobileInitialX: 140, mobileInitialY: 30, mobileFinalX: -220, mobileFinalY: -140 },
+    { id: 15, image: techStackIcons.HTML, initialX: -100, initialY: 160, finalX: -400, finalY: 320, mobileInitialX: -70, mobileInitialY: 110, mobileFinalX: -150, mobileFinalY: 200 },
+    { id: 16, image: techStackIcons.CSS, initialX: 130, initialY: -100, finalX: -600, finalY: 100, mobileInitialX: 90, mobileInitialY: -70, mobileFinalX: -200, mobileFinalY: 80 },
+  ];
+
+  const getFloatingIconStyle = (icon: typeof floatingIcons[0]) => {
+    const progress = scrollProgress;
+    const isMobile = window.innerWidth < 768;
+    const isVerySmall = window.innerWidth < 375;
+
+    const initialX = isMobile ? icon.mobileInitialX : icon.initialX;
+    const initialY = isMobile ? icon.mobileInitialY : icon.initialY;
+    const finalX = isMobile ? icon.mobileFinalX : icon.finalX;
+    const finalY = isMobile ? icon.mobileFinalY : icon.finalY;
+
+    // Constrain on small screens to prevent horizontal overflow
+    const constrainedFinalX = isVerySmall
+      ? Math.max(-100, Math.min(100, finalX * 0.3))
+      : isMobile
+        ? Math.max(-150, Math.min(150, finalX * 0.5))
+        : finalX;
+    const constrainedFinalY = isVerySmall ? finalY * 0.6 : finalY * 0.8;
+
+    const x = initialX + (constrainedFinalX - initialX) * progress;
+    const y = initialY + (constrainedFinalY - initialY) * progress;
+    const scale = isVerySmall ? 0.4 + (0.15 * progress) : isMobile ? 0.6 + (0.2 * progress) : 0.8 + (0.4 * progress);
+    const opacity = 0.9 + (0.1 * progress);
+    const rotation = progress * 20;
+
+    return {
+      transform: `translate(${x}px, ${y}px) scale(${scale}) rotate(${rotation}deg)`,
+      opacity,
+      transition: 'transform 0.1s ease-out, opacity 0.1s ease-out',
+      willChange: 'transform, opacity',
+      width: isVerySmall ? '42px' : isMobile ? '50px' : '64px',
+      height: isVerySmall ? '42px' : isMobile ? '50px' : '64px',
+      borderRadius: '14px',
+      filter: `drop-shadow(0 4px 12px ${themeColors.effects.dropShadow})`
+    };
+  };
+
   return (
     <section id="about" ref={sectionRef} className="min-h-screen" style={{
       background: themeColors.background.sections?.about || themeColors.background.gradient,
@@ -118,7 +213,7 @@ const About = () => {
       contain: 'layout style'
     }}>
       {/* Hero Section */}
-      <div className="py-10 md:py-20">
+      <div className="hero-ambient py-10 md:py-20">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row justify-between items-start max-w-6xl mx-auto gap-8">
             <div className="text-left w-full md:w-auto">
@@ -163,6 +258,27 @@ const About = () => {
       }}>
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex items-center justify-center relative min-h-[400px] md:min-h-[600px]">
+            {/* Floating tech icons that spread out on scroll */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              {floatingIcons.map((icon) => {
+                const isVerySmall = window.innerWidth < 375;
+                const isMobile = window.innerWidth < 768;
+                return (
+                  <img
+                    key={icon.id}
+                    src={icon.image}
+                    alt=""
+                    className="absolute z-10 pointer-events-none select-none"
+                    style={getFloatingIconStyle(icon)}
+                    loading={icon.id <= 4 ? "eager" : "lazy"}
+                    decoding="async"
+                    width={isVerySmall ? "42" : isMobile ? "50" : "64"}
+                    height={isVerySmall ? "42" : isMobile ? "50" : "64"}
+                  />
+                );
+              })}
+            </div>
+
             {/* About Me Journal Image */}
             <div className="w-full md:max-w-2xl lg:max-w-4xl relative z-20 px-1 md:px-0">
               <picture>

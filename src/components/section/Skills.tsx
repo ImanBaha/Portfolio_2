@@ -4,49 +4,29 @@ import { useDarkMode } from "../../contexts/DarkModeContext";
 import { useThemeColors } from "../../hooks/useThemeColors";
 import { withAlpha } from "../../hooks/useThemeColors";
 
-interface Skill {
-  name: string;
-  proficiency: number; // 0-100
-}
-
 interface SkillGroup {
-  category: string;
-  skills: Skill[];
+  directory: string; // shown as the "ls" target in the terminal
+  skills: string[];
 }
 
-// Edit these with your own skills and proficiency levels
+// Edit these with your own skills, grouped however you like
 const skillGroups: SkillGroup[] = [
   {
-    category: "Languages",
-    skills: [
-      { name: "TypeScript", proficiency: 90 },
-      { name: "JavaScript", proficiency: 90 },
-      { name: "Python", proficiency: 80 },
-      { name: "C++", proficiency: 65 },
-    ],
+    directory: "./languages",
+    skills: ["TypeScript", "JavaScript", "Python", "C++"],
   },
   {
-    category: "Frameworks",
-    skills: [
-      { name: "React", proficiency: 90 },
-      { name: "Node.js", proficiency: 85 },
-      { name: "Express", proficiency: 80 },
-      { name: "Tailwind CSS", proficiency: 85 },
-    ],
+    directory: "./frameworks",
+    skills: ["React", "Node.js", "Express", "Tailwind CSS"],
   },
   {
-    category: "Tools & Platforms",
-    skills: [
-      { name: "Git", proficiency: 90 },
-      { name: "Docker", proficiency: 70 },
-      { name: "AWS", proficiency: 65 },
-      { name: "PostgreSQL", proficiency: 75 },
-    ],
+    directory: "./tools",
+    skills: ["Git", "Docker", "AWS", "PostgreSQL"],
   },
 ];
 
-// Proficiency bars that animate from 0 to their target on first scroll into view
-const SkillBars = () => {
+// Terminal-style skill listing; groups type in staggered when scrolled into view
+const SkillTerminal = () => {
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const { isDarkMode } = useDarkMode();
@@ -70,57 +50,78 @@ const SkillBars = () => {
     return () => observer.disconnect();
   }, []);
 
+  const promptColor = isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.accent[600];
+  const mutedColor = isDarkMode ? themeColors.colors.dark[500] : themeColors.colors.dark[400];
+
   return (
-    <div ref={containerRef} className="max-w-5xl mx-auto mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-      {skillGroups.map((group) => (
-        <div key={group.category}>
-          <h3
-            className="font-mono text-sm uppercase tracking-widest mb-4"
-            style={{ color: isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.accent[600] }}
+    <div
+      ref={containerRef}
+      className="max-w-3xl mx-auto mt-10 rounded-xl overflow-hidden"
+      style={{
+        backgroundColor: isDarkMode ? withAlpha(themeColors.colors.dark[950], 0.7) : themeColors.colors.dark[900],
+        border: `1px solid ${withAlpha(themeColors.colors.accent[400], isDarkMode ? 0.25 : 0.35)}`,
+        boxShadow: `0 20px 60px rgba(0, 0, 0, ${isDarkMode ? 0.5 : 0.25}), 0 0 40px ${withAlpha(themeColors.colors.accent[400], 0.06)}`,
+      }}
+    >
+      {/* Title bar */}
+      <div
+        className="flex items-center gap-2 px-4 py-3"
+        style={{ borderBottom: `1px solid ${withAlpha(themeColors.colors.dark[600], 0.5)}` }}
+      >
+        <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FF5F57' }} />
+        <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FEBC2E' }} />
+        <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#28C840' }} />
+        <span className="ml-3 text-xs font-mono" style={{ color: mutedColor }}>
+          ~/skills — zsh
+        </span>
+      </div>
+
+      {/* Terminal body */}
+      <div className="px-5 py-5 font-mono text-sm space-y-5">
+        {skillGroups.map((group, groupIndex) => (
+          <div
+            key={group.directory}
+            style={{
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateY(0)' : 'translateY(12px)',
+              transition: `opacity 0.5s ease ${groupIndex * 0.25}s, transform 0.5s ease ${groupIndex * 0.25}s`,
+            }}
           >
-            {group.category}
-          </h3>
-          <div className="space-y-4">
-            {group.skills.map((skill, index) => (
-              <div key={skill.name}>
-                <div className="flex justify-between items-baseline mb-1.5">
-                  <span
-                    className="text-sm font-medium"
-                    style={{ color: isDarkMode ? themeColors.colors.dark[200] : themeColors.colors.dark[700] }}
-                  >
-                    {skill.name}
-                  </span>
-                  <span
-                    className="text-xs font-mono"
-                    style={{ color: isDarkMode ? themeColors.colors.dark[400] : themeColors.colors.dark[500] }}
-                  >
-                    {skill.proficiency}%
-                  </span>
-                </div>
-                <div
-                  className="h-1.5 rounded-full overflow-hidden"
-                  style={{ backgroundColor: isDarkMode ? themeColors.colors.dark[800] : themeColors.colors.dark[200] }}
-                  role="progressbar"
-                  aria-valuenow={skill.proficiency}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-label={`${skill.name} proficiency`}
+            <div className="mb-2.5">
+              <span style={{ color: promptColor }}>$ </span>
+              <span style={{ color: themeColors.colors.dark[100] }}>ls {group.directory}</span>
+            </div>
+            <div className="flex flex-wrap gap-2 pl-4">
+              {group.skills.map((skill, skillIndex) => (
+                <span
+                  key={skill}
+                  className="px-2.5 py-1 rounded text-xs transition-all duration-200 hover:-translate-y-0.5 cursor-default"
+                  style={{
+                    color: isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.accent[200],
+                    backgroundColor: withAlpha(themeColors.colors.accent[400], 0.08),
+                    border: `1px solid ${withAlpha(themeColors.colors.accent[400], 0.3)}`,
+                    opacity: isVisible ? 1 : 0,
+                    transition: `opacity 0.4s ease ${groupIndex * 0.25 + skillIndex * 0.06 + 0.15}s, transform 0.2s ease`,
+                  }}
                 >
-                  <div
-                    className="h-full rounded-full"
-                    style={{
-                      width: isVisible ? `${skill.proficiency}%` : '0%',
-                      background: `linear-gradient(90deg, ${themeColors.colors.accent[500]}, ${themeColors.colors.accent[300]})`,
-                      boxShadow: `0 0 8px ${withAlpha(themeColors.colors.accent[400], 0.5)}`,
-                      transition: `width 1s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s`,
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
+                  {skill}
+                </span>
+              ))}
+            </div>
           </div>
+        ))}
+
+        {/* Blinking cursor line */}
+        <div
+          style={{
+            opacity: isVisible ? 1 : 0,
+            transition: `opacity 0.5s ease ${skillGroups.length * 0.25 + 0.3}s`,
+          }}
+        >
+          <span style={{ color: promptColor }}>$ </span>
+          <span className="cursor" style={{ color: promptColor }}>▊</span>
         </div>
-      ))}
+      </div>
     </div>
   );
 };
@@ -189,6 +190,7 @@ const Skills = () => {
         }}
       />
       <div className="container mx-auto px-6 relative" style={{ zIndex: 2 }}>
+        <span className="section-label text-center" style={{ color: isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.accent[600] }}>// what i work with</span>
         <h2 className="text-4xl font-bold text-center mb-12" style={{ color: isDarkMode ? themeColors.colors.white : themeColors.colors.accent[500] }}>Skills</h2>
         <div
           ref={domeContainerRef}
@@ -213,7 +215,7 @@ const Skills = () => {
             }}
           />
         </div>
-        <SkillBars />
+        <SkillTerminal />
       </div>
     </section>
   );
