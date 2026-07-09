@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Command } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import DarkModeToggle from '../DarkModeToggle';
 import { useDarkMode } from '../../contexts/DarkModeContext';
@@ -100,18 +100,18 @@ const Navigation = () => {
         WebkitBackdropFilter: 'saturate(200%) blur(30px)',
         transition: 'all 0.3s ease',
         background: `linear-gradient(135deg,
-          ${withAlpha(isDarkMode ? themeColors.colors.dark[950] : themeColors.colors.pink[50], isScrolled ? 0.7 : 0.5)},
-          ${withAlpha(isDarkMode ? themeColors.colors.dark[900] : themeColors.colors.pink[25], isScrolled ? 0.7 : 0.5)})`
+          ${withAlpha(isDarkMode ? themeColors.colors.dark[950] : themeColors.colors.accent[50], isScrolled ? 0.7 : 0.5)},
+          ${withAlpha(isDarkMode ? themeColors.colors.dark[900] : themeColors.colors.accent[25], isScrolled ? 0.7 : 0.5)})`
       }}>
       <div className="nav-container">
         <button className="signature-name"
           style={{ 
             cursor: 'pointer', 
-            color: themeColors.colors.pink[500], 
+            color: themeColors.colors.accent[500], 
             background: 'none', 
             border: 'none',
             outline: 'none',
-            WebkitTextFillColor: themeColors.colors.pink[500]
+            WebkitTextFillColor: themeColors.colors.accent[500]
           }}
           onClick={() => window.location.href = '/'}
           aria-label="Your Name - Go to homepage">
@@ -131,6 +131,26 @@ const Navigation = () => {
               {tab.label}
             </button>
           ))}
+          <button
+            onClick={() => document.dispatchEvent(new Event('open-command-palette'))}
+            className="flex items-center gap-1.5 font-mono text-xs"
+            style={{
+              color: themeColors.text.accent,
+              background: 'none',
+              border: `1px solid ${themeColors.navigation.border}`,
+              borderRadius: '6px',
+              padding: '6px 10px',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = themeColors.text.accent}
+            onMouseLeave={(e) => e.currentTarget.style.borderColor = themeColors.navigation.border}
+            aria-label="Open command palette (Ctrl+K)"
+            title="Command palette (Ctrl+K)"
+          >
+            <Command size={13} aria-hidden="true" />
+            <span>K</span>
+          </button>
           <div className="ml-4">
             <DarkModeToggle
               checked={isDarkMode}
@@ -147,12 +167,12 @@ const Navigation = () => {
           aria-expanded={isMobileMenuOpen}
           style={{
             background: isDarkMode ? themeColors.colors.dark[800] : themeColors.colors.white,
-            border: `1px solid ${themeColors.colors.pink[200]}`,
+            border: `1px solid ${themeColors.colors.accent[200]}`,
             borderRadius: '12px',
             cursor: 'pointer',
             padding: '10px',
             display: 'none',
-            color: themeColors.colors.pink[500],
+            color: themeColors.colors.accent[500],
             transition: 'all 0.3s ease'
           }}
         >
@@ -207,18 +227,18 @@ const Navigation = () => {
             style={{
               background: activeTab === tab.id
                 ? withAlpha(
-                    isDarkMode ? themeColors.colors.pink[50] : themeColors.colors.pink[50],
+                    isDarkMode ? themeColors.colors.accent[50] : themeColors.colors.accent[50],
                     isDarkMode ? 0.05 : 0.8
                   )
                 : 'none',
               border: activeTab === tab.id
-                ? `1px solid ${themeColors.colors.pink[200]}`
+                ? `1px solid ${themeColors.colors.accent[200]}`
                 : '1px solid transparent',
               borderRadius: '12px',
               padding: '0.875rem 1.25rem',
               textAlign: 'left',
               color: activeTab === tab.id
-                ? themeColors.colors.pink[500]
+                ? themeColors.colors.accent[500]
                 : themeColors.text.accent,
               fontWeight: activeTab === tab.id ? '600' : '500',
               fontSize: '1rem',
@@ -236,10 +256,10 @@ const Navigation = () => {
             onMouseEnter={(e) => {
               if (activeTab !== tab.id) {
                 e.currentTarget.style.background = withAlpha(
-                  themeColors.colors.pink[50],
+                  themeColors.colors.accent[50],
                   isDarkMode ? 0.03 : 0.5
                 );
-                e.currentTarget.style.borderColor = themeColors.colors.pink[200];
+                e.currentTarget.style.borderColor = themeColors.colors.accent[200];
               }
             }}
             onMouseLeave={(e) => {
@@ -257,7 +277,7 @@ const Navigation = () => {
         <div
           className="mt-6 px-4"
           style={{
-            borderTop: `1px solid ${themeColors.colors.pink[200]}`,
+            borderTop: `1px solid ${themeColors.colors.accent[200]}`,
             paddingTop: '1rem',
             opacity: isMobileMenuOpen ? 1 : 0,
             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',

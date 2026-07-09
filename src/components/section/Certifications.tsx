@@ -77,7 +77,7 @@ const Certifications = () => {
       transition: 'background 0.3s ease-in-out'
     }}>
       <div className="container mx-auto px-6 relative" style={{ zIndex: 2 }}>
-        <h2 className="text-4xl font-bold text-center mb-6" style={{ color: isDarkMode ? themeColors.colors.white : themeColors.colors.pink[500] }}>Certifications & Credentials</h2>
+        <h2 className="text-4xl font-bold text-center mb-6" style={{ color: isDarkMode ? themeColors.colors.white : themeColors.colors.accent[500] }}>Certifications & Credentials</h2>
 
         <div className="max-w-6xl mx-auto">
           {/* AWS Certifications */}
@@ -96,7 +96,7 @@ const Certifications = () => {
                       sizes="(max-width: 768px) 128px, 160px"
                     />
                   </div>
-                  <h3 className="text-center text-sm font-medium mb-2" style={{ color: isDarkMode ? themeColors.colors.pink[300] : themeColors.colors.pink[500] }}>
+                  <h3 className="text-center text-sm font-medium mb-2" style={{ color: isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.accent[500] }}>
                     {badge.title}
                   </h3>
                   <p className="text-center text-sm" style={{ color: isDarkMode ? themeColors.colors.dark[300] : themeColors.colors.dark[600] }}>
@@ -142,7 +142,7 @@ const Certifications = () => {
                       sizes="(max-width: 768px) 128px, 160px"
                     />
                   </div>
-                  <h3 className="text-center text-sm font-medium mb-2" style={{ color: isDarkMode ? themeColors.colors.pink[300] : themeColors.colors.pink[500] }}>
+                  <h3 className="text-center text-sm font-medium mb-2" style={{ color: isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.accent[500] }}>
                     {credential.title}
                   </h3>
                   <p className="text-center text-sm" style={{ color: isDarkMode ? themeColors.colors.dark[300] : themeColors.colors.dark[600] }}>
@@ -180,7 +180,7 @@ const Certifications = () => {
           height: '60px',
           background: isDarkMode
             ? `linear-gradient(180deg, transparent 0%, ${themeColors.background.gradientEnd} 100%)`
-            : `linear-gradient(180deg, transparent 0%, ${themeColors.colors.pink[25]} 100%)`,
+            : `linear-gradient(180deg, transparent 0%, ${themeColors.colors.accent[25]} 100%)`,
           zIndex: 1
         }}
       />

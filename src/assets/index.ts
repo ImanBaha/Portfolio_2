@@ -18,8 +18,6 @@ import divider from './divider-original.webp';
 const aboutMeJournal = aboutMeJournalPng;
 
 // Re-export all asset modules
-export * from './stars';
-export * from './stickers';
 export * from './project_icons';
 export * from './techstack';
 

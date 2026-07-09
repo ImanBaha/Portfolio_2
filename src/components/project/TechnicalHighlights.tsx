@@ -14,7 +14,7 @@ const TechnicalHighlights: React.FC<TechnicalHighlightsProps> = ({ highlights })
     <ul className="space-y-3" style={{ color: isDarkMode ? themeColors.colors.white : themeColors.text.secondary }}>
       {highlights.map((highlight, index) => (
         <li key={index} className="flex items-start gap-2">
-          <span className="mt-1" style={{ color: themeColors.colors.pink[500] }}>•</span>
+          <span className="mt-1" style={{ color: themeColors.colors.accent[500] }}>•</span>
           <span>{highlight}</span>
         </li>
       ))}

@@ -4,6 +4,7 @@ import { DarkModeProvider, useDarkMode } from './contexts/DarkModeContext'
 import { useThemeColors } from './hooks/useThemeColors'
 import { colors } from './styles/colors'
 import Navigation from './components/section/Navigation'
+import CommandPalette from './components/CommandPalette'
 import About from './components/section/About'
 import { divider } from './assets'
 import './App.css'
@@ -55,7 +56,7 @@ function HomePage() {
             height: '200px',
             background: isDarkMode 
               ? `linear-gradient(180deg, transparent 0%, ${themeColors.background.gradientEnd} 100%)`
-              : `linear-gradient(180deg, transparent 0%, ${themeColors.colors.pink[25]} 100%)`,
+              : `linear-gradient(180deg, transparent 0%, ${themeColors.colors.accent[25]} 100%)`,
             zIndex: 1
           }}
         />
@@ -89,6 +90,7 @@ function AppContent() {
   return (
     <>
       <Navigation />
+      <CommandPalette />
       <div className="app transition-colors duration-300" style={{ backgroundColor: isDarkMode ? '#101727' : undefined }}>
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <main id="main-content" className="main-content">

@@ -14,19 +14,19 @@ const Footer = () => {
 
   return (
     <footer className="py-6 mt-auto transition-colors duration-300" style={{
-      backgroundColor: isDarkMode ? themeColors.background.gradientEnd : themeColors.colors.pink[50]
+      backgroundColor: isDarkMode ? themeColors.background.gradientEnd : themeColors.colors.accent[50]
     }}>
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
           {/* Left - Made with heart and copyright (centered on mobile) */}
           <div className="flex flex-col items-center md:items-start space-y-2 md:flex-1">
-            <div className="flex items-center" style={{ color: isDarkMode ? themeColors.colors.white : themeColors.colors.pink[700] }}>
+            <div className="flex items-center" style={{ color: isDarkMode ? themeColors.colors.white : themeColors.colors.accent[700] }}>
               <span className="text-m font-medium">
                 Made with
-                <span className="mx-1" style={{ color: isDarkMode ? themeColors.colors.pink[300] : themeColors.colors.pink[600] }}>˚ʚ♡ɞ˚</span>
+                <span className="mx-1" style={{ color: isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.accent[600] }}>˚ʚ♡ɞ˚</span>
               </span>
             </div>
-            <div className="text-sm" style={{ color: isDarkMode ? themeColors.colors.white : themeColors.colors.pink[700] }}>
+            <div className="text-sm" style={{ color: isDarkMode ? themeColors.colors.white : themeColors.colors.accent[700] }}>
               © {currentYear} Iman Baha. All rights reserved.
             </div>
           </div>
@@ -38,8 +38,8 @@ const Footer = () => {
               className="p-3 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-lg"
               style={{
                 backgroundColor: isDarkMode ? themeColors.colors.dark[800] : themeColors.colors.white,
-                color: themeColors.colors.pink[500],
-                border: `2px solid ${themeColors.colors.pink[300]}`,
+                color: themeColors.colors.accent[500],
+                border: `2px solid ${themeColors.colors.accent[300]}`,
                 outline: 'none !important',
                 WebkitTapHighlightColor: 'transparent'
               }}
@@ -48,7 +48,7 @@ const Footer = () => {
             >
               <ArrowUp size={20} />
             </button>
-            <span className="text-xs mt-2" style={{ color: isDarkMode ? themeColors.colors.white : themeColors.colors.pink[700] }}>
+            <span className="text-xs mt-2" style={{ color: isDarkMode ? themeColors.colors.white : themeColors.colors.accent[700] }}>
               back to top
             </span>
           </div>
@@ -62,8 +62,8 @@ const Footer = () => {
               className="p-2 rounded-full transition-all duration-300 hover:scale-110"
               style={{
                 backgroundColor: isDarkMode ? themeColors.colors.dark[800] : themeColors.colors.white,
-                color: themeColors.colors.pink[500],
-                border: `1px solid ${themeColors.colors.pink[200]}`,
+                color: themeColors.colors.accent[500],
+                border: `1px solid ${themeColors.colors.accent[200]}`,
               }}
               aria-label="GitHub Profile"
             >
@@ -78,8 +78,8 @@ const Footer = () => {
               className="p-2 rounded-full transition-all duration-300 hover:scale-110"
               style={{
                 backgroundColor: isDarkMode ? themeColors.colors.dark[800] : themeColors.colors.white,
-                color: themeColors.colors.pink[500],
-                border: `1px solid ${themeColors.colors.pink[200]}`,
+                color: themeColors.colors.accent[500],
+                border: `1px solid ${themeColors.colors.accent[200]}`,
               }}
               aria-label="LinkedIn Profile"
             >
@@ -94,8 +94,8 @@ const Footer = () => {
               className="p-2 rounded-full transition-all duration-300 hover:scale-110"
               style={{
                 backgroundColor: isDarkMode ? themeColors.colors.dark[800] : themeColors.colors.white,
-                color: themeColors.colors.pink[500],
-                border: `1px solid ${themeColors.colors.pink[200]}`,
+                color: themeColors.colors.accent[500],
+                border: `1px solid ${themeColors.colors.accent[200]}`,
               }}
               aria-label="View Resume"
             >

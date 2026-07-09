@@ -1,6 +1,6 @@
 # Portfolio Template
 
-A customizable personal portfolio website built with React, TypeScript, and Tailwind CSS. Features interactive elements, smooth animations, dark/light mode, and a clean design.
+A customizable personal portfolio website built with React, TypeScript, and Tailwind CSS. Dark tech theme with an electric blue/cyan accent, smooth animations, dark/light mode, a Ctrl+K command palette, and animated skill proficiency bars.
 
 ## Getting Started
 
@@ -170,6 +170,23 @@ Replace badge images in `src/assets/badges/` with your own.
 
 Update your technical skills in `src/components/section/Skills.tsx`. Skill icons are in `src/assets/techstack/`.
 
+**Proficiency bars** — Edit the `skillGroups` array at the top of `src/components/section/Skills.tsx`. Bars animate to their target percentage when scrolled into view:
+```tsx
+const skillGroups: SkillGroup[] = [
+  {
+    category: "Languages",
+    skills: [
+      { name: "TypeScript", proficiency: 90 },
+      // Add your own skills (proficiency 0-100)
+    ],
+  },
+];
+```
+
+### 10. Command Palette
+
+Press `Ctrl+K` (or `Cmd+K` on Mac) anywhere on the site, or click the `⌘K` button in the nav, to open a quick-navigation palette. Add or edit entries in the `commands` array in `src/components/CommandPalette.tsx` (e.g. add your project detail pages).
+
 ## Project Structure
 
 ```
@@ -179,8 +196,6 @@ portfolio-template/
 │   │   ├── project_icons/       # Project icon images
 │   │   ├── project_snapshots/   # Project screenshot folders
 │   │   ├── badges/              # Certification badge images
-│   │   ├── stars/               # Decorative star images
-│   │   ├── stickers/            # Sticker images
 │   │   └── techstack/           # Skill/technology icons
 │   ├── components/
 │   │   ├── section/             # Main page sections
@@ -204,11 +219,12 @@ portfolio-template/
 
 ## Features
 
+- Dark tech theme with electric blue/cyan accent
 - Dark/light mode with system preference detection
+- Ctrl+K / Cmd+K command palette for quick navigation
+- Animated skill proficiency bars
 - Interactive ASCII text with morphing effects
-- Draggable star decorations
 - Aurora gradient backgrounds
-- Animated stickers on scroll
 - Image carousel for project screenshots
 - Responsive design across all devices
 - Lazy-loaded routes and components

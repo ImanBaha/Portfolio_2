@@ -39,7 +39,7 @@ const ProjectHeader: React.FC<ProjectHeaderProps> = ({
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg hover:opacity-80 transition-colors"
               style={{ 
                 backgroundColor: themeColors.interactive.primary,
-                color: themeColors.text.pink
+                color: themeColors.text.highlight
               }}
             >
               <Github className="h-4 w-4" aria-hidden="true" />
@@ -57,7 +57,7 @@ const ProjectHeader: React.FC<ProjectHeaderProps> = ({
             const Icon = feature.icon;
             return (
               <div key={index} className="flex items-start gap-3">
-                <Icon className="h-5 w-5 mt-1 flex-shrink-0" style={{ color: themeColors.colors.pink[500] }} aria-hidden="true" />
+                <Icon className="h-5 w-5 mt-1 flex-shrink-0" style={{ color: themeColors.colors.accent[500] }} aria-hidden="true" />
                 <div>
                   <h3 className="font-semibold" style={{ color: themeColors.text.secondary }}>{feature.title}</h3>
                   <p className="text-sm" style={{ color: themeColors.text.secondary }}>{feature.description}</p>

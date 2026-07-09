@@ -25,9 +25,9 @@ export const useThemeColors = () => {
     isDarkMode,
 
     // Quick access to common colors
-    primary: colors.pink[300], // Main dusty pink
-    secondary: colors.pink[400], // Darker dusty pink
-    accent: colors.pink[200], // Mimi pink
+    primary: colors.accent[400], // Vivid cyan
+    secondary: colors.accent[500], // Electric blue
+    accent: colors.accent[200], // Pale sky
 
     // Semantic helpers
     textPrimary: themeColors.text.primary,

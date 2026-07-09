@@ -52,7 +52,7 @@ const Experience = () => {
           height: '60px',
           background: isDarkMode
             ? `linear-gradient(180deg, ${themeColors.background.gradientEnd} 0%, transparent 100%)`
-            : `linear-gradient(180deg, ${themeColors.colors.pink[25]} 0%, transparent 100%)`,
+            : `linear-gradient(180deg, ${themeColors.colors.accent[25]} 0%, transparent 100%)`,
           zIndex: 1
         }}
       />
@@ -68,15 +68,15 @@ const Experience = () => {
         }}
       />
       <div className="container mx-auto px-6 relative" style={{ zIndex: 2 }}>
-        <h2 className="text-4xl font-bold text-center mb-6" style={{ color: isDarkMode ? themeColors.colors.white : themeColors.colors.pink[500] }}>Experience</h2>
+        <h2 className="text-4xl font-bold text-center mb-6" style={{ color: isDarkMode ? themeColors.colors.white : themeColors.colors.accent[500] }}>Experience</h2>
 
         <div className="max-w-4xl mx-auto space-y-4">
           {experiences.map((exp, index) => (
-            <Card key={index} className="border-2 border-pink-100 dark:border-gray-700 hover:border-pink-200 dark:hover:border-gray-600 transition-all duration-300 hover:shadow-lg bg-white/95 dark:bg-gray-800/95">
+            <Card key={index} className="border-2 border-sky-100 dark:border-gray-700 hover:border-sky-200 dark:hover:border-gray-600 transition-all duration-300 hover:shadow-lg bg-white/95 dark:bg-gray-800/95">
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-start">
                   <div>
-                    <CardTitle className="text-2xl" style={{ color: isDarkMode ? themeColors.colors.pink[300] : themeColors.colors.pink[400] }}>{exp.title}</CardTitle>
+                    <CardTitle className="text-2xl" style={{ color: isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.accent[400] }}>{exp.title}</CardTitle>
                     <p className="text-lg font-semibold text-gray-700 dark:text-gray-400 mt-1">{exp.company}</p>
                   </div>
                   <div className="text-right">

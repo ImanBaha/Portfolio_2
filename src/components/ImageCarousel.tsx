@@ -65,12 +65,12 @@ const ImageCarousel = ({ images, projectName }: ImageCarouselProps) => {
           {/* Navigation Arrows */}
           <button
             onClick={goToPrevious}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full shadow-lg transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-pink-300" 
+            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full shadow-lg transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-cyan-400" 
             style={{ 
               backgroundColor: isDarkMode 
-                ? `${themeColors.colors.pink[800]}CC` // 80% opacity with hex 
-                : `${themeColors.colors.pink[400]}CC`, // 80% opacity with hex
-              color: isDarkMode ? themeColors.colors.pink[100] : themeColors.colors.dark[700]
+                ? `${themeColors.colors.accent[800]}CC` // 80% opacity with hex 
+                : `${themeColors.colors.accent[400]}CC`, // 80% opacity with hex
+              color: isDarkMode ? themeColors.colors.accent[100] : themeColors.colors.dark[700]
             } as React.CSSProperties}
             aria-label="Previous image"
           >
@@ -79,12 +79,12 @@ const ImageCarousel = ({ images, projectName }: ImageCarouselProps) => {
           
           <button
             onClick={goToNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full shadow-lg transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-pink-300" 
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full shadow-lg transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-cyan-400" 
             style={{ 
               backgroundColor: isDarkMode 
-                ? `${themeColors.colors.pink[800]}CC` // 80% opacity with hex 
-                : `${themeColors.colors.pink[400]}CC`, // 80% opacity with hex
-              color: isDarkMode ? themeColors.colors.pink[100] : themeColors.colors.dark[700]
+                ? `${themeColors.colors.accent[800]}CC` // 80% opacity with hex 
+                : `${themeColors.colors.accent[400]}CC`, // 80% opacity with hex
+              color: isDarkMode ? themeColors.colors.accent[100] : themeColors.colors.dark[700]
             } as React.CSSProperties}
             aria-label="Next image"
           >
@@ -103,7 +103,7 @@ const ImageCarousel = ({ images, projectName }: ImageCarouselProps) => {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`transition-all focus:outline-none focus:ring-2 focus:ring-pink-300 focus:ring-offset-2 flex items-center justify-center`}
+              className={`transition-all focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 flex items-center justify-center`}
               style={{ 
                 minWidth: '44px',
                 minHeight: '44px',

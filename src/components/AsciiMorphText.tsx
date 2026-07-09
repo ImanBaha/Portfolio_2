@@ -39,11 +39,11 @@ const AsciiMorphText: React.FC<AsciiMorphTextProps> = ({ text }) => {
           if (iterations < 10) {
             span.textContent = chars[Math.floor(Math.random() * chars.length)];
             span.style.opacity = '1';
-            span.style.color = colors.pink[500]; // Darker dusty pink
+            span.style.color = colors.accent[500]; // Electric blue
           } else {
             span.textContent = letter;
             span.style.opacity = '1';
-            span.style.color = colors.pink[600]; // Darker dusty pink
+            span.style.color = colors.accent[600]; // Strong blue
             clearInterval(interval);
           }
           iterations++;

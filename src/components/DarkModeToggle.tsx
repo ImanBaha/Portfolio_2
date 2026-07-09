@@ -20,7 +20,7 @@ const DarkModeToggle: React.FC<DarkModeToggleProps> = ({ checked, onChange }) =>
     <button
       onClick={handleClick}
       style={{
-        color: checked ? colors.pink[300] : colors.pink[500],
+        color: checked ? colors.accent[300] : colors.accent[500],
         fontSize: '22px',
         minWidth: '44px',
         minHeight: '44px',

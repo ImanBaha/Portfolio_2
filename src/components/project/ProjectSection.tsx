@@ -17,7 +17,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ title, children, classN
       backgroundColor: themeColors.card.background,
       border: `1px solid ${themeColors.card.border}`
     }}>
-      <h2 className="text-2xl font-semibold mb-4" style={{ color: isDarkMode ? themeColors.colors.pink[300] : themeColors.colors.dark[700] }}>{title}</h2>
+      <h2 className="text-2xl font-semibold mb-4" style={{ color: isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.dark[700] }}>{title}</h2>
       {children}
     </div>
   );
