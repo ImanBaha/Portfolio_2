@@ -15,8 +15,8 @@ export const socialLinks = {
   
   // Formatted display names (extracted from environment variables)
   display: {
-    github: import.meta.env.VITE_GITHUB_URL?.replace('https://', ''),
-    linkedin: import.meta.env.VITE_LINKEDIN_URL?.replace('https://', ''),
+    github: import.meta.env.VITE_GITHUB_URL?.replace('https://github.com/ImanBaha', ''),
+    linkedin: import.meta.env.VITE_LINKEDIN_URL?.replace('https://www.linkedin.com/in/mhdnuriman-baha/', ''),
     email: import.meta.env.VITE_EMAIL,
   }
 };

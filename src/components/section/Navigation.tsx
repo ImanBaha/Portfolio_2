@@ -114,8 +114,8 @@ const Navigation = () => {
             WebkitTextFillColor: themeColors.colors.accent[500]
           }}
           onClick={() => navigate('/')}
-          aria-label="Your Name - Go to homepage">
-          Your Name
+          aria-label="Iman Baha - Go to homepage">
+          Iman Baha
         </button>
         
         {/* Desktop Navigation */}
