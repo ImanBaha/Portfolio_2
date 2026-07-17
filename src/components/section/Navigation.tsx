@@ -113,7 +113,7 @@ const Navigation = () => {
             outline: 'none',
             WebkitTextFillColor: themeColors.colors.accent[500]
           }}
-          onClick={() => window.location.href = '/'}
+          onClick={() => navigate('/')}
           aria-label="Your Name - Go to homepage">
           Your Name
         </button>
