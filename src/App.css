@@ -856,3 +856,54 @@ h1, h2, h3 {
     transform: translateX(0);
   }
 }
+
+/* Journal photo-stack "click me" affordance */
+@keyframes journalPulseRing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(14, 165, 233, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(14, 165, 233, 0);
+  }
+}
+
+.dark .journal-photo-badge {
+  animation: journalPulseRingDark 2.2s ease-out infinite;
+}
+
+.journal-photo-badge {
+  animation: journalPulseRing 2.2s ease-out infinite;
+}
+
+@keyframes journalPulseRingDark {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(34, 211, 238, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 211, 238, 0);
+  }
+}
+
+@keyframes journalBob {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.journal-photo-stack {
+  animation: journalBob 3s ease-in-out infinite;
+}
+
+.journal-photo-stack:hover,
+.journal-photo-stack:focus-visible {
+  animation-play-state: paused;
+}

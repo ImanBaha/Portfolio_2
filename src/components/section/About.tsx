@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Camera, ImageOff } from 'lucide-react';
 import AsciiMorphText from '../AsciiMorphText';
 import TypewriterCarousel from '../TypewriterCarousel';
 import { useDarkMode } from '../../contexts/DarkModeContext';
@@ -279,27 +279,139 @@ const About = () => {
               })}
             </div>
 
-            {/* About Me Journal Image */}
+            {/* About Me Journal: a handwritten intro + interests, with a clearly-clickable photo stack */}
             <div className="w-full md:max-w-2xl lg:max-w-4xl relative z-20 px-1 md:px-0">
-              <picture>
-                <source
-                  srcSet={`${aboutMeJournalWebp400} 400w, ${aboutMeJournalWebp800} 800w`}
-                  sizes="(max-width: 375px) 320px, (max-width: 480px) 400px, (max-width: 768px) 450px, 800px"
-                  type="image/webp"
-                />
-                {/* fallback for browsers that dont support webp */}
-                <img
-                  src={aboutMeJournalWebp400}
-                  alt="Journal page with handwritten personal introduction and interests"
-                  className="w-full h-auto object-contain cursor-pointer hover:opacity-90 transition-opacity"
+              <div className="relative">
+                <picture>
+                  <source
+                    srcSet={`${aboutMeJournalWebp400} 400w, ${aboutMeJournalWebp800} 800w`}
+                    sizes="(max-width: 375px) 320px, (max-width: 480px) 400px, (max-width: 768px) 450px, 800px"
+                    type="image/webp"
+                  />
+                  {/* fallback for browsers that dont support webp */}
+                  <img
+                    src={aboutMeJournalWebp400}
+                    alt="Illustration of an open spiral-bound notebook"
+                    className="w-full h-auto object-contain select-none"
+                    width="400"
+                    height="300"
+                    fetchPriority="high"
+                    loading="eager"
+                    style={{ maxWidth: '100%', height: 'auto' }}
+                  />
+                </picture>
+
+                {/* Left page: handwritten intro */}
+                <div
+                  className="absolute flex flex-col justify-center pointer-events-none"
+                  style={{ left: '7%', top: '13%', width: '38%', height: '72%' }}
+                >
+                  <p
+                    className="font-semibold leading-snug text-base sm:text-2xl md:text-3xl"
+                    style={{ fontFamily: "'Caveat', cursive", color: '#1e293b' }}
+                  >
+                    Hey, I'm Iman 👋
+                  </p>
+                  <p
+                    className="mt-1.5 sm:mt-3 leading-snug text-[11px] sm:text-base md:text-lg"
+                    style={{ fontFamily: "'Caveat', cursive", color: '#334155' }}
+                  >
+                    Software engineer who's happiest turning messy ideas into
+                    clean, working systems. Most days I'm deep in a terminal —
+                    building, breaking, and fixing things right back up.
+                  </p>
+                  <p
+                    className="mt-1.5 sm:mt-4 text-[9px] sm:text-sm md:text-base italic"
+                    style={{ fontFamily: "'Caveat', cursive", color: '#64748b' }}
+                  >
+                    based in Malaysia · always shipping
+                  </p>
+                </div>
+
+                {/* Right page: interests, nudging toward the photo stack */}
+                <div
+                  className="absolute flex flex-col justify-center pointer-events-none"
+                  style={{ left: '56%', top: '13%', width: '38%', height: '72%' }}
+                >
+                  <p
+                    className="font-semibold leading-snug text-base sm:text-2xl md:text-3xl"
+                    style={{ fontFamily: "'Caveat', cursive", color: '#1e293b' }}
+                  >
+                    Currently into:
+                  </p>
+                  <ul
+                    className="mt-1.5 sm:mt-3 leading-snug text-[11px] sm:text-base md:text-lg space-y-0 sm:space-y-1"
+                    style={{ fontFamily: "'Caveat', cursive", color: '#334155', listStyle: 'none' }}
+                  >
+                    <li>— full-stack side projects</li>
+                    <li>— clean system design</li>
+                    <li>— new frameworks &amp; tools</li>
+                    <li>— coffee-fueled late nights ☕</li>
+                  </ul>
+                  <p
+                    className="mt-2 sm:mt-5 text-[9px] sm:text-sm md:text-base italic"
+                    style={{ fontFamily: "'Caveat', cursive", color: '#64748b' }}
+                  >
+                    a few snapshots along the way ↘
+                  </p>
+                </div>
+
+                {/* Photo stack — the obvious "click me" affordance the plain image used to lack */}
+                <button
+                  type="button"
                   onClick={() => setShowProfileModal(true)}
-                  width="400"
-                  height="300"
-                  fetchPriority="high"
-                  loading="eager"
-                  style={{ maxWidth: '100%', height: 'auto' }}
-                />
-              </picture>
+                  aria-label="Open photo gallery (3 photos)"
+                  className="journal-photo-stack group absolute bg-transparent border-0 p-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-md"
+                  style={{ right: '4%', bottom: '5%', width: 'clamp(56px, 12%, 120px)' }}
+                >
+                  <div className="relative w-full" style={{ aspectRatio: '4 / 5' }}>
+                    <div
+                      className="absolute inset-0 rounded-sm bg-white transition-transform duration-300 rotate-[-10deg] group-hover:rotate-0"
+                      style={{ zIndex: 1, padding: '8%', boxShadow: '0 6px 16px rgba(0,0,0,0.22)' }}
+                    >
+                      <div className="w-full h-full rounded-[2px]" style={{ backgroundColor: '#E5E7EB' }} />
+                    </div>
+                    <div
+                      className="absolute inset-0 rounded-sm bg-white transition-transform duration-300 rotate-[6deg] group-hover:rotate-0"
+                      style={{ zIndex: 2, padding: '8%', boxShadow: '0 6px 16px rgba(0,0,0,0.22)' }}
+                    >
+                      <div className="w-full h-full rounded-[2px]" style={{ backgroundColor: '#E5E7EB' }} />
+                    </div>
+                    <div
+                      className="absolute inset-0 rounded-sm bg-white transition-transform duration-300 rotate-[-2deg] group-hover:rotate-0"
+                      style={{ zIndex: 3, padding: '8%', boxShadow: '0 8px 20px rgba(0,0,0,0.28)' }}
+                    >
+                      <div
+                        className="w-full h-full rounded-[2px] flex items-center justify-center"
+                        style={{ background: 'linear-gradient(135deg, #67E8F9 0%, #0EA5E9 100%)' }}
+                      >
+                        <Camera className="w-1/3 h-1/3 text-white/90" aria-hidden="true" />
+                      </div>
+                    </div>
+
+                    {/* Count badge with a gentle pulse so it reads as "interactive" even without hovering */}
+                    <span
+                      className="journal-photo-badge absolute -top-2 -right-2 flex items-center justify-center rounded-full text-white text-[11px] font-bold"
+                      style={{ width: '20px', height: '20px', backgroundColor: '#0EA5E9', zIndex: 4 }}
+                    >
+                      3
+                    </span>
+                  </div>
+
+                  {/* Persistent label — works on touch devices too, not just on hover */}
+                  <span
+                    className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-0.5 rounded-full text-[9px] sm:text-xs font-medium shadow"
+                    style={{
+                      bottom: '-1.4rem',
+                      backgroundColor: isDarkMode ? 'rgba(15,23,42,0.9)' : 'rgba(255,255,255,0.92)',
+                      color: isDarkMode ? '#67E8F9' : '#0284C7',
+                      border: `1px solid ${isDarkMode ? 'rgba(34,211,238,0.35)' : 'rgba(14,165,233,0.35)'}`,
+                    }}
+                  >
+                    view photos →
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -338,20 +450,31 @@ const About = () => {
               {/* Image Display */}
               <div className="relative w-full h-full flex items-center justify-center">
                 {profileImages.map((image, index) => (
-                  <img
+                  <div
                     key={index}
-                    src={image.src}
-                    alt={`Profile photo ${index + 1}`}
-                    className={`absolute w-full h-full object-contain transition-opacity duration-500 ${
+                    className={`absolute w-full h-full transition-opacity duration-500 ${
                       index === currentImageIndex ? 'opacity-100' : 'opacity-0'
                     }`}
-                    loading="eager"
-                    onError={(e) => {
-                      console.error('Image failed to load:', image.src);
-                      e.currentTarget.style.display = 'block';
-                      e.currentTarget.style.backgroundColor = '#f3f4f6';
-                    }}
-                  />
+                  >
+                    {image.src ? (
+                      <img
+                        src={image.src}
+                        alt={`Profile photo ${index + 1}`}
+                        className="w-full h-full object-contain"
+                        loading="eager"
+                      />
+                    ) : (
+                      <div
+                        className="w-full h-full flex flex-col items-center justify-center gap-3"
+                        style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)' }}
+                      >
+                        <ImageOff className="h-10 w-10" style={{ color: themeColors.colors.accent[300] }} aria-hidden="true" />
+                        <p className="text-sm" style={{ color: themeColors.colors.accent[200] }}>
+                          Photo coming soon
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 ))}
               </div>
 
