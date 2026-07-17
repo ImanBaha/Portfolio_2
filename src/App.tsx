@@ -11,6 +11,10 @@ import './App.css'
 // Lazy load project pages - add your project page imports here
 // Example: const MyProject = lazy(() => import('./pages/projects/MyProject'))
 const Contact = lazy(() => import('./pages/Contact'))
+const ProjectOne = lazy(() => import('./pages/projects/ProjectOne'))
+const ProjectTwo = lazy(() => import('./pages/projects/ProjectTwo'))
+const ProjectThree = lazy(() => import('./pages/projects/ProjectThree'))
+const ProjectFour = lazy(() => import('./pages/projects/ProjectFour'))
 
 // Lazy load below-the-fold components for better initial load
 const Projects = lazy(() => import('./components/section/Projects'))
@@ -115,6 +119,10 @@ function AppContent() {
               <Route path="/" element={<HomePage />} />
               <Route path="/contact" element={<Contact />} />
               {/* Add your project routes here */}
+              <Route path="/projects/project-one" element={<ProjectOne />} />
+              <Route path="/projects/project-two" element={<ProjectTwo />} />
+              <Route path="/projects/project-three" element={<ProjectThree />} />
+              <Route path="/projects/project-four" element={<ProjectFour />} />
               {/* Example: <Route path="/projects/my-project" element={<MyProject />} /> */}
             </Routes>
           </Suspense>
