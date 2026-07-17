@@ -13,7 +13,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="py-6 mt-auto transition-colors duration-300" style={{
+    <footer className="py-6 mt-auto transition-colors duration-300 relative z-10" style={{
       backgroundColor: isDarkMode ? themeColors.background.gradientEnd : themeColors.colors.accent[50]
     }}>
       <div className="container mx-auto px-6">

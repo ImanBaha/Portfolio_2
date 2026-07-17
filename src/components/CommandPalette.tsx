@@ -54,7 +54,7 @@ const CommandPalette = () => {
       { id: 'skills', label: 'Skills', hint: 'Go to section', icon: <Hash size={16} />, action: () => scrollToSection('skills') },
       { id: 'certifications', label: 'Certifications', hint: 'Go to section', icon: <Hash size={16} />, action: () => scrollToSection('certifications') },
       { id: 'contact', label: 'Contact', hint: 'Open page', icon: <Mail size={16} />, action: () => { close(); navigate('/contact'); } },
-      { id: 'resume', label: 'Resume', hint: 'Open PDF', icon: <FileText size={16} />, action: () => { close(); window.open('/resume.pdf', '_blank'); } },
+      { id: 'resume', label: 'Resume', hint: 'Open PDF', icon: <FileText size={16} />, action: () => { close(); window.open(`${import.meta.env.BASE_URL}Resume.pdf`, '_blank'); } },
     ];
 
     const externalCommands: Command[] = [];

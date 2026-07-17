@@ -227,14 +227,14 @@ const About = () => {
                 </div>
               </div>
               <div className="hero-buttons flex justify-start gap-3 mt-4">
-                <button
-                  className="hero-action-btn text-sm md:text-base px-4 py-2 md:px-5 md:py-2.5"
-                  onClick={() => {
-                    window.open('/resume.pdf', '_blank');
-                  }}
+                <a
+                  href={`${import.meta.env.BASE_URL}Resume.pdf`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-action-btn text-sm md:text-base px-4 py-2 md:px-5 md:py-2.5 inline-block text-center"
                 >
                   Resume →
-                </button>
+                </a>
                 <Link
                   to="/contact"
                   className="hero-action-btn text-sm md:text-base px-4 py-2 md:px-5 md:py-2.5"

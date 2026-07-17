@@ -274,6 +274,37 @@ const Navigation = () => {
             {tab.label}
           </button>
         ))}
+        <button
+          onClick={() => {
+            setIsMobileMenuOpen(false);
+            document.dispatchEvent(new Event('open-command-palette'));
+          }}
+          className="mobile-nav-tab flex items-center gap-2 font-mono"
+          style={{
+            background: 'none',
+            border: `1px solid ${themeColors.navigation.border}`,
+            borderRadius: '12px',
+            padding: '0.875rem 1.25rem',
+            textAlign: 'left',
+            color: themeColors.text.accent,
+            fontWeight: '500',
+            fontSize: '1rem',
+            cursor: 'pointer',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            opacity: isMobileMenuOpen ? 1 : 0,
+            transitionDelay: isMobileMenuOpen ? `${tabs.length * 0.1}s` : '0s',
+            marginBottom: '0.5rem',
+            minHeight: '44px',
+            display: 'flex',
+            alignItems: 'center',
+            outline: 'none',
+            width: '100%'
+          }}
+          aria-label="Open command palette"
+        >
+          <Command size={16} aria-hidden="true" />
+          <span>Command Palette</span>
+        </button>
         <div
           className="mt-6 px-4"
           style={{
