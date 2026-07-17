@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Camera, ImageOff } from 'lucide-react';
 import AsciiMorphText from '../AsciiMorphText';
@@ -7,14 +7,76 @@ import { useDarkMode } from '../../contexts/DarkModeContext';
 import { useThemeColors, withAlpha } from '../../hooks/useThemeColors';
 import { aboutMeJournalWebp800, aboutMeJournalWebp400, profile1, profile2, profile3, techStackIcons } from '../../assets';
 
+// Tech icons that spread out around the journal as you scroll. Module-level so the
+// array (and the pure transform math below) isn't recreated every render.
+const floatingIcons = [
+  { id: 1, image: techStackIcons.ReactLight, initialX: -180, initialY: -80, finalX: -550, finalY: -100, mobileInitialX: -120, mobileInitialY: -60, mobileFinalX: -250, mobileFinalY: -80 },
+  { id: 2, image: techStackIcons.TypeScript, initialX: 180, initialY: -60, finalX: 600, finalY: -250, mobileInitialX: 120, mobileInitialY: -40, mobileFinalX: 200, mobileFinalY: -120 },
+  { id: 3, image: techStackIcons.NodeJSLight, initialX: -160, initialY: 240, finalX: -200, finalY: 380, mobileInitialX: -100, mobileInitialY: 160, mobileFinalX: -120, mobileFinalY: 220 },
+  { id: 4, image: techStackIcons.Docker, initialX: 190, initialY: 260, finalX: 500, finalY: 150, mobileInitialX: 110, mobileInitialY: 180, mobileFinalX: 180, mobileFinalY: 120 },
+  { id: 5, image: techStackIcons.JavaScript, initialX: -200, initialY: 120, finalX: -200, finalY: -380, mobileInitialX: -130, mobileInitialY: 80, mobileFinalX: -130, mobileFinalY: -180 },
+  { id: 6, image: techStackIcons.AWSLight, initialX: 170, initialY: 100, finalX: 150, finalY: -360, mobileInitialX: 110, mobileInitialY: 70, mobileFinalX: 100, mobileFinalY: -160 },
+  { id: 7, image: techStackIcons.GithubLight, initialX: -130, initialY: -130, finalX: -450, finalY: -380, mobileInitialX: -90, mobileInitialY: -90, mobileFinalX: -200, mobileFinalY: -200 },
+  { id: 8, image: techStackIcons.MongoDB, initialX: 150, initialY: 200, finalX: 200, finalY: 350, mobileInitialX: 100, mobileInitialY: 140, mobileFinalX: 130, mobileFinalY: 200 },
+  { id: 9, image: techStackIcons.TailwindCSSLight, initialX: -140, initialY: 300, finalX: -500, finalY: 200, mobileInitialX: -90, mobileInitialY: 200, mobileFinalX: -180, mobileFinalY: 160 },
+  { id: 10, image: techStackIcons.ViteLight, initialX: 200, initialY: 120, finalX: 500, finalY: -380, mobileInitialX: 130, mobileInitialY: 80, mobileFinalX: 200, mobileFinalY: -180 },
+  { id: 11, image: techStackIcons.ExpressJSLight, initialX: -220, initialY: -40, finalX: 600, finalY: 10, mobileInitialX: -140, mobileInitialY: -30, mobileFinalX: 220, mobileFinalY: 10 },
+  { id: 12, image: techStackIcons.GraphQLLight, initialX: 110, initialY: -180, finalX: 500, finalY: 300, mobileInitialX: 80, mobileInitialY: -120, mobileFinalX: 180, mobileFinalY: 180 },
+  { id: 13, image: techStackIcons.RedisLight, initialX: -120, initialY: 360, finalX: 500, finalY: -100, mobileInitialX: -80, mobileInitialY: 240, mobileFinalX: 180, mobileFinalY: -80 },
+  { id: 14, image: techStackIcons.CPP, initialX: 210, initialY: 40, finalX: -640, finalY: -220, mobileInitialX: 140, mobileInitialY: 30, mobileFinalX: -220, mobileFinalY: -140 },
+  { id: 15, image: techStackIcons.HTML, initialX: -100, initialY: 160, finalX: -400, finalY: 320, mobileInitialX: -70, mobileInitialY: 110, mobileFinalX: -150, mobileFinalY: 200 },
+  { id: 16, image: techStackIcons.CSS, initialX: 130, initialY: -100, finalX: -600, finalY: 100, mobileInitialX: 90, mobileInitialY: -70, mobileFinalX: -200, mobileFinalY: 80 },
+];
+
+const getViewportFlags = () => ({
+  isMobile: typeof window !== 'undefined' && window.innerWidth < 768,
+  isVerySmall: typeof window !== 'undefined' && window.innerWidth < 375,
+});
+
+// Pure interpolation for one icon's position/scale/rotation at a given scroll progress.
+// Kept outside the component and free of CSS transitions so it can be called directly
+// from inside a rAF loop every frame without fighting a transition or triggering a re-render.
+const computeIconTransform = (
+  icon: (typeof floatingIcons)[number],
+  progress: number,
+  isMobile: boolean,
+  isVerySmall: boolean
+) => {
+  const initialX = isMobile ? icon.mobileInitialX : icon.initialX;
+  const initialY = isMobile ? icon.mobileInitialY : icon.initialY;
+  const finalX = isMobile ? icon.mobileFinalX : icon.finalX;
+  const finalY = isMobile ? icon.mobileFinalY : icon.finalY;
+
+  // Constrain on small screens to prevent horizontal overflow
+  const constrainedFinalX = isVerySmall
+    ? Math.max(-100, Math.min(100, finalX * 0.3))
+    : isMobile
+      ? Math.max(-150, Math.min(150, finalX * 0.5))
+      : finalX;
+  const constrainedFinalY = isVerySmall ? finalY * 0.6 : finalY * 0.8;
+
+  const x = initialX + (constrainedFinalX - initialX) * progress;
+  const y = initialY + (constrainedFinalY - initialY) * progress;
+  const scale = isVerySmall ? 0.4 + (0.15 * progress) : isMobile ? 0.6 + (0.2 * progress) : 0.8 + (0.4 * progress);
+  const opacity = 0.9 + (0.1 * progress);
+  const rotation = progress * 20;
+
+  return {
+    transform: `translate3d(${x}px, ${y}px, 0) scale(${scale}) rotate(${rotation}deg)`,
+    opacity,
+  };
+};
 
 const About = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [asciiText, setAsciiText] = useState('');
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [viewport, setViewport] = useState(getViewportFlags);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const iconRefs = useRef<Array<HTMLImageElement | null>>([]);
+  const scrollProgressRef = useRef(0);
+  const viewportRef = useRef(viewport);
   const { isDarkMode } = useDarkMode();
   const themeColors = useThemeColors();
 
@@ -67,40 +129,76 @@ const About = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run once on mount
 
+  // Applies each floating icon's transform/opacity directly to the DOM (no setState,
+  // no re-render, no CSS transition) so it tracks the scroll position 1:1 every frame —
+  // a transition here would always be chasing a moving target and read as laggy/jittery,
+  // which is exactly what made this feel "not smooth" on mobile.
+  const applyIconTransforms = useCallback((progress: number) => {
+    const { isMobile, isVerySmall } = viewportRef.current;
+    floatingIcons.forEach((icon, i) => {
+      const el = iconRefs.current[i];
+      if (!el) return;
+      const { transform, opacity } = computeIconTransform(icon, progress, isMobile, isVerySmall);
+      el.style.transform = transform;
+      el.style.opacity = String(opacity);
+    });
+  }, []);
+
   // Scroll progress drives the floating tech icons around the journal
   useEffect(() => {
     let ticking = false;
 
+    const updateProgress = () => {
+      if (!sectionRef.current) return;
+
+      const rect = sectionRef.current.getBoundingClientRect();
+      const sectionHeight = rect.height;
+      const windowHeight = window.innerHeight;
+
+      // Calculate how much of the section is in view
+      const visibleTop = Math.max(0, -rect.top);
+      const visibleBottom = Math.min(sectionHeight, windowHeight - rect.top);
+      const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+
+      const progress = Math.min(1, Math.max(0, visibleHeight / windowHeight));
+      scrollProgressRef.current = progress;
+      applyIconTransforms(progress);
+    };
+
     const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          if (!sectionRef.current) {
-            ticking = false;
-            return;
-          }
-
-          const rect = sectionRef.current.getBoundingClientRect();
-          const sectionHeight = rect.height;
-          const windowHeight = window.innerHeight;
-
-          // Calculate how much of the section is in view
-          const visibleTop = Math.max(0, -rect.top);
-          const visibleBottom = Math.min(sectionHeight, windowHeight - rect.top);
-          const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-
-          const progress = visibleHeight / windowHeight;
-          setScrollProgress(Math.min(1, Math.max(0, progress)));
-          ticking = false;
-        });
-        ticking = true;
-      }
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        updateProgress();
+        ticking = false;
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial call
+    updateProgress(); // Initial position, before the first scroll event
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [applyIconTransforms]);
+
+  // Keep the icons' spread/size tuned for the current viewport (phone vs desktop)
+  useEffect(() => {
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        const next = getViewportFlags();
+        viewportRef.current = next;
+        setViewport(next);
+        applyIconTransforms(scrollProgressRef.current);
+      }, 150);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(resizeTimeout);
+    };
+  }, [applyIconTransforms]);
 
   // Focus management for modal
   useEffect(() => {
@@ -146,62 +244,6 @@ const About = () => {
         setIsClosing(false);
       }, 300);
     }
-  };
-
-  // Tech icons that spread out around the journal as you scroll
-  const floatingIcons = [
-    { id: 1, image: techStackIcons.ReactLight, initialX: -180, initialY: -80, finalX: -550, finalY: -100, mobileInitialX: -120, mobileInitialY: -60, mobileFinalX: -250, mobileFinalY: -80 },
-    { id: 2, image: techStackIcons.TypeScript, initialX: 180, initialY: -60, finalX: 600, finalY: -250, mobileInitialX: 120, mobileInitialY: -40, mobileFinalX: 200, mobileFinalY: -120 },
-    { id: 3, image: techStackIcons.NodeJSLight, initialX: -160, initialY: 240, finalX: -200, finalY: 380, mobileInitialX: -100, mobileInitialY: 160, mobileFinalX: -120, mobileFinalY: 220 },
-    { id: 4, image: techStackIcons.Docker, initialX: 190, initialY: 260, finalX: 500, finalY: 150, mobileInitialX: 110, mobileInitialY: 180, mobileFinalX: 180, mobileFinalY: 120 },
-    { id: 5, image: techStackIcons.JavaScript, initialX: -200, initialY: 120, finalX: -200, finalY: -380, mobileInitialX: -130, mobileInitialY: 80, mobileFinalX: -130, mobileFinalY: -180 },
-    { id: 6, image: techStackIcons.AWSLight, initialX: 170, initialY: 100, finalX: 150, finalY: -360, mobileInitialX: 110, mobileInitialY: 70, mobileFinalX: 100, mobileFinalY: -160 },
-    { id: 7, image: techStackIcons.GithubLight, initialX: -130, initialY: -130, finalX: -450, finalY: -380, mobileInitialX: -90, mobileInitialY: -90, mobileFinalX: -200, mobileFinalY: -200 },
-    { id: 8, image: techStackIcons.MongoDB, initialX: 150, initialY: 200, finalX: 200, finalY: 350, mobileInitialX: 100, mobileInitialY: 140, mobileFinalX: 130, mobileFinalY: 200 },
-    { id: 9, image: techStackIcons.TailwindCSSLight, initialX: -140, initialY: 300, finalX: -500, finalY: 200, mobileInitialX: -90, mobileInitialY: 200, mobileFinalX: -180, mobileFinalY: 160 },
-    { id: 10, image: techStackIcons.ViteLight, initialX: 200, initialY: 120, finalX: 500, finalY: -380, mobileInitialX: 130, mobileInitialY: 80, mobileFinalX: 200, mobileFinalY: -180 },
-    { id: 11, image: techStackIcons.ExpressJSLight, initialX: -220, initialY: -40, finalX: 600, finalY: 10, mobileInitialX: -140, mobileInitialY: -30, mobileFinalX: 220, mobileFinalY: 10 },
-    { id: 12, image: techStackIcons.GraphQLLight, initialX: 110, initialY: -180, finalX: 500, finalY: 300, mobileInitialX: 80, mobileInitialY: -120, mobileFinalX: 180, mobileFinalY: 180 },
-    { id: 13, image: techStackIcons.RedisLight, initialX: -120, initialY: 360, finalX: 500, finalY: -100, mobileInitialX: -80, mobileInitialY: 240, mobileFinalX: 180, mobileFinalY: -80 },
-    { id: 14, image: techStackIcons.CPP, initialX: 210, initialY: 40, finalX: -640, finalY: -220, mobileInitialX: 140, mobileInitialY: 30, mobileFinalX: -220, mobileFinalY: -140 },
-    { id: 15, image: techStackIcons.HTML, initialX: -100, initialY: 160, finalX: -400, finalY: 320, mobileInitialX: -70, mobileInitialY: 110, mobileFinalX: -150, mobileFinalY: 200 },
-    { id: 16, image: techStackIcons.CSS, initialX: 130, initialY: -100, finalX: -600, finalY: 100, mobileInitialX: 90, mobileInitialY: -70, mobileFinalX: -200, mobileFinalY: 80 },
-  ];
-
-  const getFloatingIconStyle = (icon: typeof floatingIcons[0]) => {
-    const progress = scrollProgress;
-    const isMobile = window.innerWidth < 768;
-    const isVerySmall = window.innerWidth < 375;
-
-    const initialX = isMobile ? icon.mobileInitialX : icon.initialX;
-    const initialY = isMobile ? icon.mobileInitialY : icon.initialY;
-    const finalX = isMobile ? icon.mobileFinalX : icon.finalX;
-    const finalY = isMobile ? icon.mobileFinalY : icon.finalY;
-
-    // Constrain on small screens to prevent horizontal overflow
-    const constrainedFinalX = isVerySmall
-      ? Math.max(-100, Math.min(100, finalX * 0.3))
-      : isMobile
-        ? Math.max(-150, Math.min(150, finalX * 0.5))
-        : finalX;
-    const constrainedFinalY = isVerySmall ? finalY * 0.6 : finalY * 0.8;
-
-    const x = initialX + (constrainedFinalX - initialX) * progress;
-    const y = initialY + (constrainedFinalY - initialY) * progress;
-    const scale = isVerySmall ? 0.4 + (0.15 * progress) : isMobile ? 0.6 + (0.2 * progress) : 0.8 + (0.4 * progress);
-    const opacity = 0.9 + (0.1 * progress);
-    const rotation = progress * 20;
-
-    return {
-      transform: `translate(${x}px, ${y}px) scale(${scale}) rotate(${rotation}deg)`,
-      opacity,
-      transition: 'transform 0.1s ease-out, opacity 0.1s ease-out',
-      willChange: 'transform, opacity',
-      width: isVerySmall ? '42px' : isMobile ? '50px' : '64px',
-      height: isVerySmall ? '42px' : isMobile ? '50px' : '64px',
-      borderRadius: '14px',
-      filter: `drop-shadow(0 4px 12px ${themeColors.effects.dropShadow})`
-    };
   };
 
   return (
@@ -260,23 +302,24 @@ const About = () => {
           <div className="flex items-center justify-center relative min-h-[400px] md:min-h-[600px]">
             {/* Floating tech icons that spread out on scroll */}
             <div className="absolute inset-0 flex items-center justify-center">
-              {floatingIcons.map((icon) => {
-                const isVerySmall = window.innerWidth < 375;
-                const isMobile = window.innerWidth < 768;
-                return (
-                  <img
-                    key={icon.id}
-                    src={icon.image}
-                    alt=""
-                    className="absolute z-10 pointer-events-none select-none"
-                    style={getFloatingIconStyle(icon)}
-                    loading={icon.id <= 4 ? "eager" : "lazy"}
-                    decoding="async"
-                    width={isVerySmall ? "42" : isMobile ? "50" : "64"}
-                    height={isVerySmall ? "42" : isMobile ? "50" : "64"}
-                  />
-                );
-              })}
+              {floatingIcons.map((icon, index) => (
+                <img
+                  key={icon.id}
+                  ref={(el) => { iconRefs.current[index] = el; }}
+                  src={icon.image}
+                  alt=""
+                  className="absolute z-10 pointer-events-none select-none"
+                  style={{
+                    willChange: 'transform, opacity',
+                    borderRadius: '14px',
+                    filter: `drop-shadow(0 4px 12px ${themeColors.effects.dropShadow})`,
+                  }}
+                  loading={icon.id <= 4 ? "eager" : "lazy"}
+                  decoding="async"
+                  width={viewport.isVerySmall ? 42 : viewport.isMobile ? 50 : 64}
+                  height={viewport.isVerySmall ? 42 : viewport.isMobile ? 50 : 64}
+                />
+              ))}
             </div>
 
             {/* About Me Journal: a handwritten intro + interests, with a clearly-clickable photo stack */}
