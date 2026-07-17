@@ -208,8 +208,8 @@ export default function DomeGallery({
     enlargeTransitionMs = DEFAULTS.enlargeTransitionMs,
     segments = DEFAULTS.segments,
     dragDampening = 2,
-    openedImageWidth = "400px",
-    openedImageHeight = "400px",
+    openedImageWidth = "min(62vw, 320px)",
+    openedImageHeight = "min(62vw, 320px)",
     imageBorderRadius = "30px",
     openedImageBorderRadius = "30px",
     grayscale = false,
@@ -842,16 +842,11 @@ export default function DomeGallery({
       }
     }
     
-    // body.dg-scroll-lock {
-    //   position: fixed !important;
-    //   top: 0;
-    //   left: 0;
-    //   width: 100% !important;
-    //   height: 100% !important;
-    //   overflow: hidden !important;
-    //   touch-action: none !important;
-    //   overscroll-behavior: contain !important;
-    // }
+    body.dg-scroll-lock {
+      overflow: hidden !important;
+      touch-action: none !important;
+      overscroll-behavior: contain !important;
+    }
     .item__image {
       position: absolute;
       inset: 10px;

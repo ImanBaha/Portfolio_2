@@ -126,50 +126,83 @@ const SkillTerminal = () => {
   );
 };
 
+const MOBILE_BREAKPOINT = 768;
+
 const Skills = () => {
   const [scale, setScale] = useState(0.5);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth < MOBILE_BREAKPOINT
+  );
   const sectionRef = useRef<HTMLDivElement>(null);
   const domeContainerRef = useRef<HTMLDivElement>(null);
   const { isDarkMode } = useDarkMode();
   const themeColors = useThemeColors();
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      if (!sectionRef.current) return;
+      if (ticking) return;
+      ticking = true;
 
-      const rect = sectionRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+      requestAnimationFrame(() => {
+        if (!sectionRef.current) {
+          ticking = false;
+          return;
+        }
 
-      // Calculate visibility based on how centered the section is
-      let visibilityRatio = 0;
+        const rect = sectionRef.current.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
 
-      if (rect.top <= windowHeight && rect.bottom >= 0) {
-        const sectionHeight = rect.height;
-        const sectionCenter = rect.top + sectionHeight / 2;
-        const windowCenter = windowHeight / 2;
-        const distanceFromCenter = Math.abs(sectionCenter - windowCenter);
-        const maxDistance = windowHeight / 2 + sectionHeight / 2;
+        // Calculate visibility based on how centered the section is
+        let visibilityRatio = 0;
 
-        // Smooth curve that peaks when section is centered
-        visibilityRatio = 1 - (distanceFromCenter / maxDistance);
-        visibilityRatio = Math.max(0, Math.min(1, visibilityRatio));
+        if (rect.top <= windowHeight && rect.bottom >= 0) {
+          const sectionHeight = rect.height;
+          const sectionCenter = rect.top + sectionHeight / 2;
+          const windowCenter = windowHeight / 2;
+          const distanceFromCenter = Math.abs(sectionCenter - windowCenter);
+          const maxDistance = windowHeight / 2 + sectionHeight / 2;
 
-        // Apply easing curve for more natural growth
-        visibilityRatio = visibilityRatio * visibilityRatio * (3 - 2 * visibilityRatio);
-      }
+          // Smooth curve that peaks when section is centered
+          visibilityRatio = 1 - (distanceFromCenter / maxDistance);
+          visibilityRatio = Math.max(0, Math.min(1, visibilityRatio));
 
-      // Scale from 0.5 to 1 instead of 0 to 1 for better starting size
-      const minScale = 0.5;
-      const maxScale = 1;
-      const finalScale = minScale + (maxScale - minScale) * visibilityRatio;
-      setScale(finalScale);
+          // Apply easing curve for more natural growth
+          visibilityRatio = visibilityRatio * visibilityRatio * (3 - 2 * visibilityRatio);
+        }
+
+        // Scale from 0.5 to 1 instead of 0 to 1 for better starting size
+        const minScale = 0.5;
+        const maxScale = 1;
+        const finalScale = minScale + (maxScale - minScale) * visibilityRatio;
+        setScale(finalScale);
+        ticking = false;
+      });
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Initial calculation
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  // Keep the dome's sizing/interaction tuned for the current viewport (phones vs desktop)
+  useEffect(() => {
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+      }, 150);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(resizeTimeout);
     };
   }, []);
 
@@ -196,13 +229,19 @@ const Skills = () => {
           ref={domeContainerRef}
           className="relative w-full"
           style={{
-            height: '600px',
+            height: isMobile ? '380px' : '600px',
             transform: `scale(${scale})`,
             transformOrigin: 'center center',
             willChange: 'transform',
           }}
         >
-          <DomeGallery />
+          <DomeGallery
+            minRadius={isMobile ? 200 : 600}
+            fit={isMobile ? 0.62 : 0.5}
+            padFactor={isMobile ? 0.18 : 0.25}
+            segments={isMobile ? 26 : 35}
+            dragSensitivity={isMobile ? 9 : 20}
+          />
           {/* Faded edges overlay with performance-optimized blending */}
           <div
             className="absolute inset-0 pointer-events-none"
