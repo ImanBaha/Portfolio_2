@@ -33,32 +33,67 @@ const getViewportFlags = () => ({
   isVerySmall: typeof window !== 'undefined' && window.innerWidth < 375,
 });
 
+// Mobile layout: on a narrow screen there's no room to fan icons out to the sides
+// (they end up behind the journal in its transparent corners, which looks broken), so
+// instead we arrange them in a tidy band ABOVE and a band BELOW the journal. As the
+// section scrolls away they slide straight back toward the journal, tuck behind it, and
+// fade out — a clean vertical "gather" rather than a chaotic multi-directional scatter.
+const MOBILE_COLS = [-138, -47, 47, 138];
+const MOBILE_ROW_BASE = 165; // distance from journal centre to the inner band
+const MOBILE_ROW_GAP = 56; // extra distance for the outer band
+
+const computeMobileTransform = (index: number, progress: number, isVerySmall: boolean) => {
+  const band = index < 8 ? -1 : 1; // -1 = above the journal, +1 = below it
+  const local = index % 8;
+  const row = Math.floor(local / 4); // 0 = inner (closer to journal), 1 = outer
+  const col = local % 4;
+
+  const xScale = isVerySmall ? 0.72 : 1;
+  const yScale = isVerySmall ? 0.82 : 1;
+
+  // Where the icon rests while the journal is in view
+  const visibleX = MOBILE_COLS[col] * xScale;
+  const visibleY = band * (MOBILE_ROW_BASE + row * MOBILE_ROW_GAP) * yScale;
+
+  // Where it hides: gathered toward centre, tucked behind the journal
+  const hiddenX = visibleX * 0.4;
+  const hiddenY = band * 26 * yScale;
+
+  // smoothstep for a soft settle instead of a linear slide
+  const eased = progress * progress * (3 - 2 * progress);
+
+  const x = hiddenX + (visibleX - hiddenX) * eased;
+  const y = hiddenY + (visibleY - hiddenY) * eased;
+  const scale = (isVerySmall ? 0.42 : 0.5) + (isVerySmall ? 0.3 : 0.38) * eased;
+  const opacity = Math.min(1, Math.max(0, (eased - 0.04) * 1.3)); // fully hidden once tucked
+  const rotation = (1 - eased) * band * 8;
+
+  return {
+    transform: `translate3d(${x}px, ${y}px, 0) scale(${scale}) rotate(${rotation}deg)`,
+    opacity,
+  };
+};
+
 // Pure interpolation for one icon's position/scale/rotation at a given scroll progress.
 // Kept outside the component and free of CSS transitions so it can be called directly
 // from inside a rAF loop every frame without fighting a transition or triggering a re-render.
 const computeIconTransform = (
   icon: (typeof floatingIcons)[number],
+  index: number,
   progress: number,
   isMobile: boolean,
   isVerySmall: boolean
 ) => {
-  const initialX = isMobile ? icon.mobileInitialX : icon.initialX;
-  const initialY = isMobile ? icon.mobileInitialY : icon.initialY;
-  const finalX = isMobile ? icon.mobileFinalX : icon.finalX;
-  const finalY = isMobile ? icon.mobileFinalY : icon.finalY;
+  if (isMobile) {
+    return computeMobileTransform(index, progress, isVerySmall);
+  }
 
-  // Constrain on small screens to prevent horizontal overflow
-  const constrainedFinalX = isVerySmall
-    ? Math.max(-100, Math.min(100, finalX * 0.3))
-    : isMobile
-      ? Math.max(-150, Math.min(150, finalX * 0.5))
-      : finalX;
-  const constrainedFinalY = isVerySmall ? finalY * 0.6 : finalY * 0.8;
-
-  const x = initialX + (constrainedFinalX - initialX) * progress;
-  const y = initialY + (constrainedFinalY - initialY) * progress;
-  const scale = isVerySmall ? 0.4 + (0.15 * progress) : isMobile ? 0.6 + (0.2 * progress) : 0.8 + (0.4 * progress);
-  const opacity = 0.9 + (0.1 * progress);
+  // Desktop: icons fan out to the sides of the wide journal as it comes into view.
+  const constrainedFinalY = icon.finalY * 0.8;
+  const x = icon.initialX + (icon.finalX - icon.initialX) * progress;
+  const y = icon.initialY + (constrainedFinalY - icon.initialY) * progress;
+  const scale = 0.8 + 0.4 * progress;
+  const opacity = 0.9 + 0.1 * progress;
   const rotation = progress * 20;
 
   return {
@@ -138,7 +173,7 @@ const About = () => {
     floatingIcons.forEach((icon, i) => {
       const el = iconRefs.current[i];
       if (!el) return;
-      const { transform, opacity } = computeIconTransform(icon, progress, isMobile, isVerySmall);
+      const { transform, opacity } = computeIconTransform(icon, i, progress, isMobile, isVerySmall);
       el.style.transform = transform;
       el.style.opacity = String(opacity);
     });
@@ -310,6 +345,9 @@ const About = () => {
                   alt=""
                   className="absolute z-10 pointer-events-none select-none"
                   style={{
+                    // Starts hidden; the first rAF frame positions it correctly. Avoids a
+                    // one-frame flash of all icons stacked, un-transformed, at dead centre.
+                    opacity: 0,
                     willChange: 'transform, opacity',
                     borderRadius: '14px',
                     filter: `drop-shadow(0 4px 12px ${themeColors.effects.dropShadow})`,
