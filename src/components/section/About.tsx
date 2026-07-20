@@ -119,9 +119,10 @@ const About = () => {
 
   const roles = [
     'Software Engineer',
-    'Full-Stack Developer',
-    'Systems Engineer',
+    'Human Machine Interface',
     'Frontend Developer',
+    'Software Developer',
+
   ];
 
   const profileImages = [
@@ -391,23 +392,21 @@ const About = () => {
                 >
                   <p
                     className="font-semibold leading-snug text-base sm:text-2xl md:text-3xl"
-                    style={{ fontFamily: "'Caveat', cursive", color: '#1e293b' }}
+                    style={{ fontFamily: "'Patrick Hand', cursive", color: '#1e293b' }}
                   >
                     Hey, I'm Iman 👋
                   </p>
                   <p
-                    className="mt-1.5 sm:mt-3 leading-snug text-[11px] sm:text-base md:text-lg"
-                    style={{ fontFamily: "'Caveat', cursive", color: '#334155' }}
+                    className="mt-1.5 sm:mt-3 leading-snug text-[9px] sm:text-[13px] md:text-[15px]"
+                    style={{ fontFamily: "'Patrick Hand', cursive", color: '#334155' }}
                   >
-                    Software engineer who's happiest turning messy ideas into
-                    clean, working systems. Most days I'm deep in a terminal —
-                    building, breaking, and fixing things right back up.
+                    A Software Engineering grad who loves building mobile, web, and Window applications. I turn complex ideas into clean, efficient apps using React Native, Laravel, and C#. Always eager to learn and ship great products!
                   </p>
                   <p
                     className="mt-1.5 sm:mt-4 text-[9px] sm:text-sm md:text-base italic"
-                    style={{ fontFamily: "'Caveat', cursive", color: '#64748b' }}
+                    style={{ fontFamily: "'Patrick Hand', cursive", color: '#64748b' }}
                   >
-                    based in Malaysia · always shipping
+                    based in Malaysia
                   </p>
                 </div>
 
@@ -418,22 +417,21 @@ const About = () => {
                 >
                   <p
                     className="font-semibold leading-snug text-base sm:text-2xl md:text-3xl"
-                    style={{ fontFamily: "'Caveat', cursive", color: '#1e293b' }}
+                    style={{ fontFamily: "'Patrick Hand', cursive", color: '#1e293b' }}
                   >
-                    Currently into:
+                    Recent Focus:
                   </p>
                   <ul
-                    className="mt-1.5 sm:mt-3 leading-snug text-[11px] sm:text-base md:text-lg space-y-0 sm:space-y-1"
-                    style={{ fontFamily: "'Caveat', cursive", color: '#334155', listStyle: 'none' }}
+                    className="mt-1.5 sm:mt-3 leading-snug text-[10px] sm:text-[14px] md:text-[17px] space-y-0 sm:space-y-1"
+                    style={{ fontFamily: "'Patrick Hand', cursive", color: '#334155', listStyle: 'none' }}
                   >
-                    <li>— full-stack side projects</li>
-                    <li>— clean system design</li>
-                    <li>— new frameworks &amp; tools</li>
-                    <li>— coffee-fueled late nights ☕</li>
+                    <li>— User-friendly system design ✨</li>
+                    <li>— Support & Troubleshooting 🛠️</li>
+                    <li>— Team collaboration 🤝</li>
                   </ul>
                   <p
                     className="mt-2 sm:mt-5 text-[9px] sm:text-sm md:text-base italic"
-                    style={{ fontFamily: "'Caveat', cursive", color: '#64748b' }}
+                    style={{ fontFamily: "'Patrick Hand', cursive", color: '#64748b' }}
                   >
                     a few snapshots along the way ↘
                   </p>

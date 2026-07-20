@@ -17,25 +17,25 @@ const Experience = () => {
       ]
     },
     {
-      title: "Your Job Title",
-      company: "Company Name",
-      location: "City, State",
-      period: "Month Year - Month Year",
+      title: "Software Developer (Internship)",
+      company: "Two Q Alliance Sdn Bhd",
+      location: "Putrajaya, Wilayah Persekutuan",
+      period: "Feb 2025 - Aug 2025",
       description: [
-        "Description of your role and accomplishments",
-        "Another accomplishment or responsibility",
-        "One more key achievement",
+        "Contributed to the development of two Laravel Livewire-based systems: MPAJ (Majlis Pembandaran Ampang Jaya) and PSOH (Pendigitilan Sumber dan Operasi Hutan).",
+        "For MPAJ, supportedboth frontend and backend, implemented key sub-modules, and assisted in Pre-UAT testing for the Perolehan module.",
+        "For PSOH, handled bug fixes (Easy-Medium priority), supported minor development and helped with testing for PAT phase. ",
       ]
     },
     {
-      title: "Your Job Title",
-      company: "Company Name",
-      location: "City, State",
-      period: "Month Year - Month Year",
+      title: "Market Operations Assistant",
+      company: "Universiti Pendidikan Sultan Idris",
+      location: "Tanjong Malim, Perak",
+      period: "Oct 2023 - Jul 2024",
       description: [
-        "Description of your role and accomplishments",
-        "Another accomplishment or responsibility",
-        "One more key achievement",
+        "Managed business premises, including rent collection to ensure smooth running of the market.",
+        "Maintain strong communication with vendors and visitors to ensure smooth business operations.",
+        "Conduct regular inspections of market areas to ensure cleanliness standards.",
       ]
     }
   ];

@@ -13,15 +13,33 @@ interface SkillGroup {
 const skillGroups: SkillGroup[] = [
   {
     directory: "./languages",
-    skills: ["TypeScript", "JavaScript", "Python", "C++"],
+    skills: [
+      "JavaScript", "TypeScript", "PHP", "Python", "Java", "C++", "C#", "Visual Basic", "HTML", "CSS"
+    ],
   },
   {
     directory: "./frameworks",
-    skills: ["React", "Node.js", "Express", "Tailwind CSS"],
+    skills: [
+       "Laravel Livewire", "React Native (Expo)", "Bootstrap", "Tailwind CSS", "WPF"
+    ],
+  },
+  {
+    directory: "./databases",
+    skills: [
+      "MySQL", "Supabase", "SQLite"
+    ],
   },
   {
     directory: "./tools",
-    skills: ["Git", "Docker", "AWS", "PostgreSQL"],
+    skills: [
+       "Visual Studio", "Antigravity", "Git", "GitHub", "Laragon", "Power BI", "Canva", "Draw.io"
+    ],
+  },
+  {
+    directory: "./analysis-and-design",
+    skills: [
+      "System Design", "Data Modelling", "Process Flow Diagrams", "Agile Methodologies"
+    ],
   },
 ];
 

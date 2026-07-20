@@ -1,72 +1,75 @@
 import { useDarkMode } from '../../contexts/DarkModeContext';
 import { useThemeColors } from '../../hooks/useThemeColors';
-import awsCloudFoundationsBadge from '../../assets/badges/AWS_cloud_foundations_badge.webp';
-import awsCloudPractitionerBadge from '../../assets/badges/AWS_cloud_practitioner_badge.webp';
-import citiLogo from '../../assets/badges/citi_logo.webp';
+import eduInnovateBadge from '../../assets/EDU@INNOVATE.png';
+import ieRiichBadge from '../../assets/ie-RIICH.png';
+import iversionLogo from '../../assets/iversion.png';
+import excelerateLogo from '../../assets/excelerate.png';
+import talentlabsLogo from '../../assets/talentlabs.png';
 
 const Certifications = () => {
   const { isDarkMode } = useDarkMode();
   const themeColors = useThemeColors();
 
   const badges = [
+  
     {
-      id: 'aws-cloud-foundations',
-      image: awsCloudFoundationsBadge,
-      alt: 'AWS Academy Cloud Foundations Badge',
-      title: 'AWS Academy Cloud Foundations',
-      subtitle: 'Academy Graduate',
-      credentialUrl: 'https://www.credly.com/badges/your-credential-id/public_url',
+      id: 'excelerate-powerbi',
+      image: excelerateLogo,
+      alt: 'Excelerate Logo',
+      title: 'Dashboarding with Power BI',
+      subtitle: 'Excelerate',
+      credentialUrl: 'https://drive.google.com/file/d/13UH7ul6WtaEniMeAdXUpC7YfJnFKIMmf/view?usp=sharing',
+      status: 'completed'
+    },{
+      id: 'edu-innovate-2025',
+      image: eduInnovateBadge,
+      alt: 'Edu@Innovate 2025 Badge',
+      title: 'Gold Award Category C (Student)',
+      subtitle: 'Edu@Innovate 2025',
+      credentialUrl: 'https://drive.google.com/file/d/10IPk6BaHtckRcCvF3INXzWV0E5lW0-oS/view?usp=sharing',
       status: 'completed'
     },
     {
-      id: 'aws-cloud-practitioner',
-      image: awsCloudPractitionerBadge,
-      alt: 'AWS Cloud Practitioner Badge',
-      title: 'AWS Certified Cloud Practitioner',
-      subtitle: 'Amazon Web Services',
-      credentialUrl: 'https://www.credly.com/badges/your-credential-id/public_url',
+      id: 'ie-riich',
+      image: ieRiichBadge,
+      alt: 'ie-RIICH 2025 Badge',
+      title: 'Gold Award',
+      subtitle: 'ie-RIICH 2025',
+      credentialUrl: 'https://drive.google.com/file/d/1DRB-bIy8xNVfrz3Kd-wqoxf2qc7Ic6xl/view?usp=sharing',
       status: 'completed'
     }
+
   ];
 
+
   const credentials = [
+    
+   
     {
-      id: 'citi-human-subjects',
-      image: citiLogo,
-      alt: 'CITI Program Logo',
-      title: 'Social / Behavioral Research Investigator',
-      subtitle: 'Human Subjects Research',
-      issuer: 'CITI Program',
-      issued: 'Sep 2023',
-      expires: 'Sep 2026',
-      credentialId: '00000000',
-      credentialUrl: 'https://www.citiprogram.org/verify/?your-credential-id',
+      id: 'talentlabs-sql',
+      image: talentlabsLogo,
+      alt: 'Talentlabs Logo',
+      title: 'M1 in SQL',
+      subtitle: 'Talentlabs',
+      credentialUrl: 'https://www.talentlabs.org/certificate/X8uIzkCAT7OESxYVmsGWaw',
       status: 'completed'
     },
     {
-      id: 'citi-hipaa',
-      image: citiLogo,
-      alt: 'CITI Program Logo',
-      title: 'Research and HIPAA Privacy Protections',
-      subtitle: 'Human Research',
-      issuer: 'CITI Program',
-      issued: 'Sep 2023',
-      expires: 'Sep 2026',
-      credentialId: '00000000',
-      credentialUrl: 'https://www.citiprogram.org/verify/?your-credential-id',
+      id: 'iversion-critical-thinking',
+      image: iversionLogo,
+      alt: 'Iversion Associates',
+      title: 'Critical Thinking, Problem Solving and Decision Making',
+      subtitle: 'Iversion Associates',
+      credentialUrl: 'https://www.credly.com/badges/7423d2a6-afdf-4a78-ac0f-9c15dd50ea6f/linked_in_profile',
       status: 'completed'
     },
     {
-      id: 'citi-gcp',
-      image: citiLogo,
-      alt: 'CITI Program Logo',
-      title: 'Investigational Drugs and Medical Devices',
-      subtitle: 'Good Clinical Practice',
-      issuer: 'CITI Program',
-      issued: 'Nov 2025',
-      expires: 'Nov 2028',
-      credentialId: '00000000',
-      credentialUrl: 'https://www.citiprogram.org/verify/?your-credential-id',
+      id: 'talentlabs-python',
+      image: talentlabsLogo,
+      alt: 'Talentlabs Logo',
+      title: 'M1 in Python',
+      subtitle: 'Talentlabs',
+      credentialUrl: 'https://www.talentlabs.org/certificate/ilOUKcn6RSC0vKKcJj55Pw',
       status: 'completed'
     }
   ];
@@ -90,11 +93,11 @@ const Certifications = () => {
                     <img
                       src={badge.image}
                       alt={badge.alt}
-                      className="w-32 h-32 md:w-40 md:h-40 object-contain transition-transform duration-300 group-hover:scale-105"
+                      className="w-40 h-40 md:w-56 md:h-56 object-contain transition-transform duration-300 group-hover:scale-105"
                       loading="lazy"
-                      width="160"
-                      height="160"
-                      sizes="(max-width: 768px) 128px, 160px"
+                      width="224"
+                      height="224"
+                      sizes="(max-width: 768px) 160px, 224px"
                     />
                   </div>
                   <h3 className="text-center text-sm font-medium mb-2" style={{ color: isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.accent[500] }}>
