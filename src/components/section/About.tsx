@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Camera, ImageOff } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ImageOff } from 'lucide-react';
 import AsciiMorphText from '../AsciiMorphText';
 import TypewriterCarousel from '../TypewriterCarousel';
+import FlipPhotoPreview from '../FlipPhotoPreview';
 import { useDarkMode } from '../../contexts/DarkModeContext';
 import { useThemeColors, withAlpha } from '../../hooks/useThemeColors';
 import { aboutMeJournalWebp800, aboutMeJournalWebp400, profile1, profile2, profile3, techStackIcons } from '../../assets';
@@ -107,6 +108,7 @@ const About = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isStackPaused, setIsStackPaused] = useState(false);
   const [viewport, setViewport] = useState(getViewportFlags);
   const sectionRef = useRef<HTMLDivElement>(null);
   const iconRefs = useRef<Array<HTMLImageElement | null>>([]);
@@ -441,6 +443,10 @@ const About = () => {
                 <button
                   type="button"
                   onClick={() => setShowProfileModal(true)}
+                  onMouseEnter={() => setIsStackPaused(true)}
+                  onMouseLeave={() => setIsStackPaused(false)}
+                  onFocus={() => setIsStackPaused(true)}
+                  onBlur={() => setIsStackPaused(false)}
                   aria-label="Open photo gallery (3 photos)"
                   className="journal-photo-stack group absolute bg-transparent border-0 p-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-md"
                   style={{ right: '4%', bottom: '5%', width: 'clamp(56px, 12%, 120px)' }}
@@ -450,24 +456,33 @@ const About = () => {
                       className="absolute inset-0 rounded-sm bg-white transition-transform duration-300 rotate-[-10deg] group-hover:rotate-0"
                       style={{ zIndex: 1, padding: '8%', boxShadow: '0 6px 16px rgba(0,0,0,0.22)' }}
                     >
-                      <div className="w-full h-full rounded-[2px]" style={{ backgroundColor: '#E5E7EB' }} />
+                      <img
+                        src={profile3}
+                        alt=""
+                        className="w-full h-full rounded-[2px] object-cover"
+                        style={{ filter: 'brightness(0.65)' }}
+                      />
                     </div>
                     <div
                       className="absolute inset-0 rounded-sm bg-white transition-transform duration-300 rotate-[6deg] group-hover:rotate-0"
                       style={{ zIndex: 2, padding: '8%', boxShadow: '0 6px 16px rgba(0,0,0,0.22)' }}
                     >
-                      <div className="w-full h-full rounded-[2px]" style={{ backgroundColor: '#E5E7EB' }} />
+                      <img
+                        src={profile2}
+                        alt=""
+                        className="w-full h-full rounded-[2px] object-cover"
+                        style={{ filter: 'brightness(0.65)' }}
+                      />
                     </div>
                     <div
                       className="absolute inset-0 rounded-sm bg-white transition-transform duration-300 rotate-[-2deg] group-hover:rotate-0"
-                      style={{ zIndex: 3, padding: '8%', boxShadow: '0 8px 20px rgba(0,0,0,0.28)' }}
+                      style={{ zIndex: 3, padding: '8%', boxShadow: '0 8px 20px rgba(0,0,0,0.28)', perspective: '600px' }}
                     >
-                      <div
-                        className="w-full h-full rounded-[2px] flex items-center justify-center"
-                        style={{ background: 'linear-gradient(135deg, #67E8F9 0%, #0EA5E9 100%)' }}
-                      >
-                        <Camera className="w-1/3 h-1/3 text-white/90" aria-hidden="true" />
-                      </div>
+                      <FlipPhotoPreview
+                        images={profileImages.map((p) => ({ src: p.src }))}
+                        paused={isStackPaused}
+                        className="w-full h-full rounded-[2px] object-cover"
+                      />
                     </div>
 
                     {/* Count badge with a gentle pulse so it reads as "interactive" even without hovering */}
