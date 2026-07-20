@@ -907,3 +907,29 @@ h1, h2, h3 {
 .journal-photo-stack:focus-visible {
   animation-play-state: paused;
 }
+
+@keyframes flipPreviewDip {
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(90deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+.flip-preview-img {
+  backface-visibility: hidden;
+}
+
+.flip-preview-img.is-flipping {
+  animation: flipPreviewDip var(--flip-duration, 600ms) ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-preview-img.is-flipping {
+    animation: none;
+  }
+}
