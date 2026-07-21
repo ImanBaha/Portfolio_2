@@ -40,12 +40,21 @@ const {
     UnityLight: Unity,
     VercelLight: Vercel,
     ViteLight: Vite,
+    Python,
+    PHP,
+    Laravel,
+    MySQL,
+    Git,
+    SQLite,
+    Supabase,
+    PowerBI,
 } = techStackIcons;
 
 type ImageItem = string | { src: string; alt?: string };
 
 type DomeGalleryProps = {
     images?: ImageItem[];
+    centerImages?: ImageItem[];
     fit?: number;
     fitBasis?: "auto" | "min" | "max" | "width" | "height";
     minRadius?: number;
@@ -110,6 +119,28 @@ const DEFAULT_IMAGES: ImageItem[] = [
     { src: StackOverflow, alt: "Stack Overflow" },
 ];
 
+// The user's own skills — these are placed at the front-centre of the dome
+// (index 0 sits dead-centre; the rest spiral outward). Everything else in the
+// pool fills the remaining tiles around them.
+const SKILL_IMAGES: ImageItem[] = [
+    { src: JavaScript, alt: "JavaScript" },
+    { src: TypeScript, alt: "TypeScript" },
+    { src: ReactIcon, alt: "React Native" },
+    { src: TailwindCSS, alt: "Tailwind CSS" },
+    { src: Laravel, alt: "Laravel" },
+    { src: PHP, alt: "PHP" },
+    { src: Python, alt: "Python" },
+    { src: MySQL, alt: "MySQL" },
+    { src: Java, alt: "Java" },
+    { src: CS, alt: "C#" },
+    { src: Bootstrap, alt: "Bootstrap" },
+    { src: Git, alt: "Git" },
+    { src: Github, alt: "GitHub" },
+    { src: Supabase, alt: "Supabase" },
+    { src: SQLite, alt: "SQLite" },
+    { src: PowerBI, alt: "Power BI" },
+];
+
 const DEFAULTS = {
     maxVerticalRotationDeg: 5,
     dragSensitivity: 20,
@@ -130,7 +161,12 @@ const getDataNumber = (el: HTMLElement, name: string, fallback: number) => {
     return Number.isFinite(n) ? n : fallback;
 };
 
-function buildItems(pool: ImageItem[], seg: number): ItemDef[] {
+const normalizeImage = (image: ImageItem) =>
+    typeof image === "string"
+        ? { src: image, alt: "" }
+        : { src: image.src || "", alt: image.alt || "" };
+
+function buildItems(pool: ImageItem[], centerPool: ImageItem[], seg: number): ItemDef[] {
     const xCols = Array.from({ length: seg }, (_, i) => -37 + i * 2);
     const evenYs = [-4, -2, 0, 2, 4];
     const oddYs = [-3, -1, 1, 3, 5];
@@ -141,31 +177,67 @@ function buildItems(pool: ImageItem[], seg: number): ItemDef[] {
     });
 
     const totalSlots = coords.length;
-    if (pool.length === 0) {
+
+    // Icons to feature at the front-centre of the dome.
+    const centerImages = centerPool.map(normalizeImage).filter((im) => im.src);
+    const centerSrcSet = new Set(centerImages.map((im) => im.src));
+
+    // Everything else fills the surrounding tiles. Strip any icon already shown
+    // at the centre so featured skills never repeat out in the filler.
+    let fillerImages = pool
+        .map(normalizeImage)
+        .filter((im) => im.src && !centerSrcSet.has(im.src));
+
+    if (fillerImages.length === 0) {
+        // Nothing left to fill with (pool was empty or all centred) — fall back
+        // so no tile ends up blank.
+        fillerImages = centerImages.length ? centerImages : [{ src: "", alt: "" }];
+    }
+
+    if (centerImages.length === 0 && pool.length === 0) {
         return coords.map((c) => ({ ...c, src: "", alt: "" }));
     }
-    if (pool.length > totalSlots) {
-        console.warn(
-            `[DomeGallery] Provided image count (${pool.length}) exceeds available tiles (${totalSlots}). Some images will not be shown.`
-        );
+
+    // The tile facing the viewer at rest has base rotation ~0, i.e. x ≈ -0.5,
+    // y ≈ 0.5. Rank every tile by its distance from that point so the nearest
+    // tiles get the skills.
+    const CENTER_X = -0.5;
+    const CENTER_Y = 0.5;
+    const dist2 = (c: { x: number; y: number }) =>
+        (c.x - CENTER_X) ** 2 + (c.y - CENTER_Y) ** 2;
+
+    const orderByCenter = coords
+        .map((c, i) => ({ i, d: dist2(c) }))
+        .sort((a, b) => a.d - b.d)
+        .map((o) => o.i);
+
+    const centerCount = Math.min(centerImages.length, totalSlots);
+    const centerSlot = new Map<number, { src: string; alt: string }>();
+    for (let rank = 0; rank < centerCount; rank++) {
+        centerSlot.set(orderByCenter[rank], centerImages[rank]);
     }
 
-    const normalizedImages = pool.map((image) => {
-        if (typeof image === "string") {
-            return { src: image, alt: "" };
+    // Central tiles get skills (nearest → first skill); every other tile cycles
+    // through the filler pool.
+    const usedImages: { src: string; alt: string }[] = new Array(totalSlots);
+    let fillCursor = 0;
+    for (let i = 0; i < totalSlots; i++) {
+        const skill = centerSlot.get(i);
+        if (skill) {
+            usedImages[i] = skill;
+        } else {
+            usedImages[i] = fillerImages[fillCursor % fillerImages.length];
+            fillCursor++;
         }
-        return { src: image.src || "", alt: image.alt || "" };
-    });
+    }
 
-    const usedImages = Array.from(
-        { length: totalSlots },
-        (_, i) => normalizedImages[i % normalizedImages.length]
-    );
-
+    // Avoid two identical filler icons sitting adjacent — but never disturb a
+    // centre (skill) tile.
     for (let i = 1; i < usedImages.length; i++) {
+        if (centerSlot.has(i) || centerSlot.has(i - 1)) continue;
         if (usedImages[i].src === usedImages[i - 1].src) {
             for (let j = i + 1; j < usedImages.length; j++) {
-                if (usedImages[j].src !== usedImages[i].src) {
+                if (!centerSlot.has(j) && usedImages[j].src !== usedImages[i].src) {
                     const tmp = usedImages[i];
                     usedImages[i] = usedImages[j];
                     usedImages[j] = tmp;
@@ -197,6 +269,7 @@ function computeItemBaseRotation(
 
 export default function DomeGallery({
     images = DEFAULT_IMAGES,
+    centerImages = SKILL_IMAGES,
     fit = 0.5,
     fitBasis = "auto",
     minRadius = 600,
@@ -254,7 +327,7 @@ export default function DomeGallery({
         document.body.classList.remove("dg-scroll-lock");
     }, []);
 
-    const items = useMemo(() => buildItems(images, segments), [images, segments]);
+    const items = useMemo(() => buildItems(images, centerImages, segments), [images, centerImages, segments]);
 
     const applyTransform = (xDeg: number, yDeg: number) => {
         const el = sphereRef.current;
