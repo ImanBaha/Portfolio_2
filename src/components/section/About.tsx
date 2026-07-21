@@ -11,22 +11,22 @@ import { aboutMeJournalWebp800, aboutMeJournalWebp400, profile1, profile2, profi
 // Tech icons that spread out around the journal as you scroll. Module-level so the
 // array (and the pure transform math below) isn't recreated every render.
 const floatingIcons = [
-  { id: 1, image: techStackIcons.ReactLight, initialX: -180, initialY: -80, finalX: -550, finalY: -100, mobileInitialX: -120, mobileInitialY: -60, mobileFinalX: -250, mobileFinalY: -80 },
+  { id: 1, image: techStackIcons.JavaScript, initialX: -180, initialY: -80, finalX: -550, finalY: -100, mobileInitialX: -120, mobileInitialY: -60, mobileFinalX: -250, mobileFinalY: -80 },
   { id: 2, image: techStackIcons.TypeScript, initialX: 180, initialY: -60, finalX: 600, finalY: -250, mobileInitialX: 120, mobileInitialY: -40, mobileFinalX: 200, mobileFinalY: -120 },
-  { id: 3, image: techStackIcons.NodeJSLight, initialX: -160, initialY: 240, finalX: -200, finalY: 380, mobileInitialX: -100, mobileInitialY: 160, mobileFinalX: -120, mobileFinalY: 220 },
-  { id: 4, image: techStackIcons.Docker, initialX: 190, initialY: 260, finalX: 500, finalY: 150, mobileInitialX: 110, mobileInitialY: 180, mobileFinalX: 180, mobileFinalY: 120 },
-  { id: 5, image: techStackIcons.JavaScript, initialX: -200, initialY: 120, finalX: -200, finalY: -380, mobileInitialX: -130, mobileInitialY: 80, mobileFinalX: -130, mobileFinalY: -180 },
-  { id: 6, image: techStackIcons.AWSLight, initialX: 170, initialY: 100, finalX: 150, finalY: -360, mobileInitialX: 110, mobileInitialY: 70, mobileFinalX: 100, mobileFinalY: -160 },
-  { id: 7, image: techStackIcons.GithubLight, initialX: -130, initialY: -130, finalX: -450, finalY: -380, mobileInitialX: -90, mobileInitialY: -90, mobileFinalX: -200, mobileFinalY: -200 },
-  { id: 8, image: techStackIcons.MongoDB, initialX: 150, initialY: 200, finalX: 200, finalY: 350, mobileInitialX: 100, mobileInitialY: 140, mobileFinalX: 130, mobileFinalY: 200 },
-  { id: 9, image: techStackIcons.TailwindCSSLight, initialX: -140, initialY: 300, finalX: -500, finalY: 200, mobileInitialX: -90, mobileInitialY: 200, mobileFinalX: -180, mobileFinalY: 160 },
-  { id: 10, image: techStackIcons.ViteLight, initialX: 200, initialY: 120, finalX: 500, finalY: -380, mobileInitialX: 130, mobileInitialY: 80, mobileFinalX: 200, mobileFinalY: -180 },
-  { id: 11, image: techStackIcons.ExpressJSLight, initialX: -220, initialY: -40, finalX: 600, finalY: 10, mobileInitialX: -140, mobileInitialY: -30, mobileFinalX: 220, mobileFinalY: 10 },
-  { id: 12, image: techStackIcons.GraphQLLight, initialX: 110, initialY: -180, finalX: 500, finalY: 300, mobileInitialX: 80, mobileInitialY: -120, mobileFinalX: 180, mobileFinalY: 180 },
-  { id: 13, image: techStackIcons.RedisLight, initialX: -120, initialY: 360, finalX: 500, finalY: -100, mobileInitialX: -80, mobileInitialY: 240, mobileFinalX: 180, mobileFinalY: -80 },
-  { id: 14, image: techStackIcons.CPP, initialX: 210, initialY: 40, finalX: -640, finalY: -220, mobileInitialX: 140, mobileInitialY: 30, mobileFinalX: -220, mobileFinalY: -140 },
-  { id: 15, image: techStackIcons.HTML, initialX: -100, initialY: 160, finalX: -400, finalY: 320, mobileInitialX: -70, mobileInitialY: 110, mobileFinalX: -150, mobileFinalY: 200 },
-  { id: 16, image: techStackIcons.CSS, initialX: 130, initialY: -100, finalX: -600, finalY: 100, mobileInitialX: 90, mobileInitialY: -70, mobileFinalX: -200, mobileFinalY: 80 },
+  { id: 3, image: techStackIcons.Python, initialX: -160, initialY: 240, finalX: -200, finalY: 380, mobileInitialX: -100, mobileInitialY: 160, mobileFinalX: -120, mobileFinalY: 220 },
+  { id: 4, image: techStackIcons.PHP, initialX: 190, initialY: 260, finalX: 500, finalY: 150, mobileInitialX: 110, mobileInitialY: 180, mobileFinalX: 180, mobileFinalY: 120 },
+  { id: 5, image: techStackIcons.JavaLight, initialX: -200, initialY: 120, finalX: -200, finalY: -380, mobileInitialX: -130, mobileInitialY: 80, mobileFinalX: -130, mobileFinalY: -180 },
+  { id: 6, image: techStackIcons.CS, initialX: 170, initialY: 100, finalX: 150, finalY: -360, mobileInitialX: 110, mobileInitialY: 70, mobileFinalX: 100, mobileFinalY: -160 },
+  { id: 7, image: techStackIcons.ReactLight, initialX: -130, initialY: -130, finalX: -450, finalY: -380, mobileInitialX: -90, mobileInitialY: -90, mobileFinalX: -200, mobileFinalY: -200 },
+  { id: 8, image: techStackIcons.TailwindCSSLight, initialX: 150, initialY: 200, finalX: 200, finalY: 350, mobileInitialX: 100, mobileInitialY: 140, mobileFinalX: 130, mobileFinalY: 200 },
+  { id: 9, image: techStackIcons.Bootstrap, initialX: -140, initialY: 300, finalX: -500, finalY: 200, mobileInitialX: -90, mobileInitialY: 200, mobileFinalX: -180, mobileFinalY: 160 },
+  { id: 10, image: techStackIcons.Laravel, initialX: 200, initialY: 120, finalX: 500, finalY: -380, mobileInitialX: 130, mobileInitialY: 80, mobileFinalX: 200, mobileFinalY: -180 },
+  { id: 11, image: techStackIcons.MySQL, initialX: -220, initialY: -40, finalX: 600, finalY: 10, mobileInitialX: -140, mobileInitialY: -30, mobileFinalX: 220, mobileFinalY: 10 },
+  { id: 12, image: techStackIcons.Git, initialX: 110, initialY: -180, finalX: 500, finalY: 300, mobileInitialX: 80, mobileInitialY: -120, mobileFinalX: 180, mobileFinalY: 180 },
+  { id: 13, image: techStackIcons.GithubLight, initialX: -120, initialY: 360, finalX: 500, finalY: -100, mobileInitialX: -80, mobileInitialY: 240, mobileFinalX: 180, mobileFinalY: -80 },
+  { id: 14, image: techStackIcons.Supabase, initialX: 210, initialY: 40, finalX: -640, finalY: -220, mobileInitialX: 140, mobileInitialY: 30, mobileFinalX: -220, mobileFinalY: -140 },
+  { id: 15, image: techStackIcons.CSS, initialX: -100, initialY: 160, finalX: -400, finalY: 320, mobileInitialX: -70, mobileInitialY: 110, mobileFinalX: -150, mobileFinalY: 200 },
+  { id: 16, image: techStackIcons.PowerBI, initialX: 130, initialY: -100, finalX: -600, finalY: 100, mobileInitialX: 90, mobileInitialY: -70, mobileFinalX: -200, mobileFinalY: 80 },
 ];
 
 const getViewportFlags = () => ({
@@ -346,7 +346,7 @@ const About = () => {
                   ref={(el) => { iconRefs.current[index] = el; }}
                   src={icon.image}
                   alt=""
-                  className="absolute z-10 pointer-events-none select-none"
+                  className="absolute z-10 pointer-events-none select-none object-contain"
                   style={{
                     // Starts hidden; the first rAF frame positions it correctly. Avoids a
                     // one-frame flash of all icons stacked, un-transformed, at dead centre.

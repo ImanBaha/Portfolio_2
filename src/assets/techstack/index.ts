@@ -33,6 +33,15 @@ import TypeScript from './TypeScript.svg';
 import UnityLight from './Unity-Light.svg';
 import VercelLight from './Vercel-Light.svg';
 import ViteLight from './Vite-Light.svg';
+// Skill logos added to mirror the Skills section (devicon / svgl / gilbarbara, colored)
+import Python from './Python.svg';
+import PHP from './PHP.svg';
+import Laravel from './Laravel.svg';
+import MySQL from './MySQL.svg';
+import Git from './Git.svg';
+import SQLite from './SQLite.svg';
+import Supabase from './Supabase.svg';
+import PowerBI from './PowerBI.svg';
 
 export const techStackIcons = {
   AWSLight,
@@ -69,6 +78,14 @@ export const techStackIcons = {
   UnityLight,
   VercelLight,
   ViteLight,
+  Python,
+  PHP,
+  Laravel,
+  MySQL,
+  Git,
+  SQLite,
+  Supabase,
+  PowerBI,
 };
 
 // Export as array for easier iteration if needed
