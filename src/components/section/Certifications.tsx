@@ -1,10 +1,10 @@
 import { useDarkMode } from '../../contexts/DarkModeContext';
 import { useThemeColors } from '../../hooks/useThemeColors';
-import eduInnovateBadge from '../../assets/EDU@INNOVATE.png';
-import ieRiichBadge from '../../assets/ie-RIICH.png';
-import iversionLogo from '../../assets/iversion.png';
-import excelerateLogo from '../../assets/excelerate.png';
-import talentlabsLogo from '../../assets/talentlabs.png';
+import eduInnovateBadge from '../../assets/badges/EDU@INNOVATE.png';
+import ieRiichBadge from '../../assets/badges/ie-RIICH.png';
+import iversionLogo from '../../assets/badges/iversion.png';
+import excelerateLogo from '../../assets/badges/excelerate.png';
+import talentlabsLogo from '../../assets/badges/talentlabs.png';
 
 const Certifications = () => {
   const { isDarkMode } = useDarkMode();
@@ -85,7 +85,7 @@ const Certifications = () => {
 
         <div className="max-w-6xl mx-auto">
           {/* AWS Certifications */}
-          <div className="flex flex-wrap justify-center gap-8 mb-12">
+          <div className="grid grid-cols-2 justify-items-center gap-x-4 gap-y-8 [&>*:last-child:nth-child(odd)]:col-span-2 mb-12 md:flex md:flex-wrap md:justify-center md:gap-8">
             {badges.map((badge) => {
               const BadgeComponent = () => (
                 <div className="flex flex-col items-center group">
@@ -93,17 +93,17 @@ const Certifications = () => {
                     <img
                       src={badge.image}
                       alt={badge.alt}
-                      className="w-40 h-40 md:w-56 md:h-56 object-contain transition-transform duration-300 group-hover:scale-105"
+                      className="w-28 h-28 md:w-56 md:h-56 object-contain transition-transform duration-300 group-hover:scale-105"
                       loading="lazy"
                       width="224"
                       height="224"
-                      sizes="(max-width: 768px) 160px, 224px"
+                      sizes="(max-width: 768px) 112px, 224px"
                     />
                   </div>
                   <h3 className="text-center text-sm font-medium mb-2" style={{ color: isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.accent[500] }}>
                     {badge.title}
                   </h3>
-                  <p className="text-center text-sm" style={{ color: isDarkMode ? themeColors.colors.dark[300] : themeColors.colors.dark[600] }}>
+                  <p className="text-center text-xs md:text-sm" style={{ color: isDarkMode ? themeColors.colors.dark[300] : themeColors.colors.dark[600] }}>
                     {badge.subtitle || (badge.status === 'in-progress' ? 'In Progress!' : '')}
                   </p>
                 </div>
@@ -131,7 +131,7 @@ const Certifications = () => {
           </div>
 
           {/* CITI Program Certifications */}
-          <div className="flex flex-wrap justify-center gap-8">
+          <div className="grid grid-cols-2 justify-items-center gap-x-4 gap-y-8 [&>*:last-child:nth-child(odd)]:col-span-2 md:flex md:flex-wrap md:justify-center md:gap-8">
             {credentials.map((credential) => {
               const BadgeComponent = () => (
                 <div className="flex flex-col items-center group">
@@ -139,17 +139,17 @@ const Certifications = () => {
                     <img
                       src={credential.image}
                       alt={credential.alt}
-                      className="w-32 h-32 md:w-40 md:h-40 object-contain transition-transform duration-300 group-hover:scale-105"
+                      className="w-24 h-24 md:w-40 md:h-40 object-contain transition-transform duration-300 group-hover:scale-105"
                       loading="lazy"
                       width="160"
                       height="160"
-                      sizes="(max-width: 768px) 128px, 160px"
+                      sizes="(max-width: 768px) 96px, 160px"
                     />
                   </div>
                   <h3 className="text-center text-sm font-medium mb-2" style={{ color: isDarkMode ? themeColors.colors.accent[300] : themeColors.colors.accent[500] }}>
                     {credential.title}
                   </h3>
-                  <p className="text-center text-sm" style={{ color: isDarkMode ? themeColors.colors.dark[300] : themeColors.colors.dark[600] }}>
+                  <p className="text-center text-xs md:text-sm" style={{ color: isDarkMode ? themeColors.colors.dark[300] : themeColors.colors.dark[600] }}>
                     {credential.subtitle || (credential.status === 'in-progress' ? 'In Progress!' : '')}
                   </p>
                 </div>
