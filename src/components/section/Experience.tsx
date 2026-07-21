@@ -8,12 +8,14 @@ const Experience = () => {
   const themeColors = useThemeColors();
   const experiences = [
     {
-      title: "Your Job Title",
-      company: "Company Name",
-      location: "City, State",
-      period: "Month Year - Month Year",
+      title: "Software Engineer",
+      company: "Pentamaster Corporation Berhad",
+      location: "Penang, Malaysia",
+      period: "Oct 2025 - Current",
       description: [
-        "Description of your role and accomplishments",
+        "Developed and configured intuitive Human-Machine Interfaces (HMI), enabling seamless and efficient interactions between operators and industrial systems.",
+        "Provided technical support, diagnosing and resolving software issues to minimize downtime for end-users.",
+        "Conducted software debugging and delivered on-site support (e.g., China) for system deployment and troubleshooting.",
       ]
     },
     {
